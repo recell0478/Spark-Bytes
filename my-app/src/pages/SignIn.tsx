@@ -1,8 +1,7 @@
-import { useState } from 'react';
-import type { NextPage } from 'next';
+import React, { useState } from 'react';
 import { Layout } from 'antd';
 
-const SignIn: NextPage = () => {
+const SignIn: React.FC = () => {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
 
@@ -42,7 +41,7 @@ const SignIn: NextPage = () => {
                         style={{
                             backgroundColor: '#c00',
                             color: '#fff',
-                            padding: 'o.75rem',
+                            padding: '0.75rem',
                             border: 'none',
                             cursor: 'pointer',
                             marginBottom: '1rem',
@@ -67,8 +66,6 @@ const SignIn: NextPage = () => {
                         Sign Up
                     </button>
                 </a>
-
-                <footer>©BU Spark Bytes 2025</footer>
             </div>
         </Layout>
     );
