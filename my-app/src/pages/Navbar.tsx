@@ -7,10 +7,16 @@ export const Navbar = () => {
       <h1 className={styles.title}>Spark!Bytes</h1>
       <ul className={styles.menuItems}>
         <li>
+          <Link to="/">Home</Link>
+        </li>
+        <li>
           <Link to="/">Create Events</Link>
         </li>
         <li>
-          <Link to="/about">Login / Sign Up</Link>
+          <Link to="/signin">Sign In</Link>
+        </li>
+        <li>
+          <Link to="/signup">Sign Up</Link>
         </li>
         <li>
           <Link to="/profile">

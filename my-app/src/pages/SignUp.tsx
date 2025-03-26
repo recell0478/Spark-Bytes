@@ -1,13 +1,18 @@
 import React, { useState } from "react";
 import { Layout } from "antd";
 
-const SignIn: React.FC = () => {
+const SignUp: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>(""); // Added confirm password state
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log("Sign In:", { email, password });
+    if (password !== confirmPassword) {
+      console.log("Passwords do not match");
+      return;
+    }
+    console.log("Sign Up:", { email, password });
   };
 
   return (
@@ -18,22 +23,23 @@ const SignIn: React.FC = () => {
           display: "flex",
           justifyContent: "center",
           padding: "2rem",
-          marginTop: "80px", // Added marginTop for space between navbar and form
+          marginTop: "80px", // Added marginTop to ensure the form starts below the navbar
         }}
       >
         <div
           style={{
-            width: "600px", // Consistent width
+            width: "600px", // Increased width for horizontal expansion
             maxWidth: "100%",
             display: "flex",
             flexDirection: "column",
             padding: "2rem",
-            border: "1px solid #ddd",
-            borderRadius: "8px",
-            backgroundColor: "#f9f9f9",
+            border: "1px solid #ddd", // Optional: adds border around the form
+            borderRadius: "8px", // Rounded corners for the form
+            backgroundColor: "#f9f9f9", // Light background for form area
           }}
         >
-          <h2>Welcome Back!</h2> {/* Changed text for consistency */}
+          <h2>Create an Account</h2>
+
           <form
             onSubmit={handleSubmit}
             style={{ display: "flex", flexDirection: "column" }}
@@ -51,12 +57,11 @@ const SignIn: React.FC = () => {
               style={{
                 marginBottom: "1rem",
                 padding: "0.75rem",
-                width: "100%", // Full width input
+                width: "100%", // Full width for the input
                 borderRadius: "4px",
-                border: "1px solid #ccc",
+                border: "1px solid #ccc", // Light border
               }}
             />
-
             <label htmlFor="password" style={{ textAlign: "left" }}>
               Password
             </label>
@@ -70,12 +75,29 @@ const SignIn: React.FC = () => {
               style={{
                 marginBottom: "1rem",
                 padding: "0.75rem",
-                width: "100%", // Full width input
+                width: "100%", // Full width for the input
                 borderRadius: "4px",
-                border: "1px solid #ccc",
+                border: "1px solid #ccc", // Light border
               }}
             />
-
+            <label htmlFor="confirmPassword" style={{ textAlign: "left" }}>
+              Confirm Password
+            </label>
+            <input
+              id="confirmPassword"
+              type="password"
+              placeholder="Confirm your password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+              style={{
+                marginBottom: "1rem",
+                padding: "0.75rem",
+                width: "100%", // Full width for the input
+                borderRadius: "4px",
+                border: "1px solid #ccc", // Light border
+              }}
+            />
             <button
               type="submit"
               style={{
@@ -85,17 +107,17 @@ const SignIn: React.FC = () => {
                 border: "none",
                 cursor: "pointer",
                 marginBottom: "1rem",
-                borderRadius: "4px", // Rounded button
-                width: "100%", // Full width button
+                borderRadius: "4px", // Rounded corners for the button
+                width: "100%", // Full width for the button
               }}
             >
-              Sign In
+              Sign Up
             </button>
           </form>
           <a href="#" style={{ display: "block", margin: "1rem 0" }}>
             Forgot Password
           </a>
-          <a href="/signup">
+          <a href="/signin">
             <button
               style={{
                 backgroundColor: "#c00",
@@ -103,11 +125,11 @@ const SignIn: React.FC = () => {
                 padding: "0.75rem",
                 border: "none",
                 cursor: "pointer",
-                width: "100%",
-                borderRadius: "4px", // Rounded button
+                width: "100%", // Full width for the button
+                borderRadius: "4px", // Rounded corners for the button
               }}
             >
-              Don't have an account? Sign Up
+              Already have an account? Sign In
             </button>
           </a>
         </div>
@@ -116,4 +138,4 @@ const SignIn: React.FC = () => {
   );
 };
 
-export default SignIn;
+export default SignUp;
