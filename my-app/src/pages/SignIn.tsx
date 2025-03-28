@@ -1,13 +1,27 @@
+// SignIn.tsx
 import React, { useState } from "react";
 import { Layout } from "antd";
+import { useNavigate } from "react-router-dom";
+import { supabase } from "../supabaseClient";
+
 
 const SignIn: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const navigate = useNavigate();
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log("Sign In:", { email, password });
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      if (error) throw error;
+      navigate("/");
+    } catch (error) {
+      console.error('Error signing in:', error);
+    }
   };
 
   return (

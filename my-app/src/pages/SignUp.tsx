@@ -1,18 +1,44 @@
 import React, { useState } from "react";
 import { Layout } from "antd";
+import { supabase } from "../supabaseClient";
+import { useNavigate } from "react-router-dom";
 
 const SignUp: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [confirmPassword, setConfirmPassword] = useState<string>(""); // Added confirm password state
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
+  const navigate = useNavigate();
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (password !== confirmPassword) {
-      console.log("Passwords do not match");
+      alert("Passwords do not match");
       return;
     }
-    console.log("Sign Up:", { email, password });
+  
+    try {
+      // 1. Create auth user
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email,
+        password,
+      });
+      
+      if (authError) throw authError;
+  
+      // 2. Insert into public.users table
+      const { error: dbError } = await supabase
+        .from("users")
+        .insert([{ username, email }]);
+  
+      if (dbError) throw dbError;
+      
+      // Redirect to home
+      navigate("/");
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Registration failed");
+    }
   };
 
   return (
@@ -60,6 +86,24 @@ const SignUp: React.FC = () => {
                 width: "100%", // Full width for the input
                 borderRadius: "4px",
                 border: "1px solid #ccc", // Light border
+              }}
+            />
+            <label htmlFor="username" style={{ textAlign: "left" }}>
+              Username
+            </label>
+            <input
+              id="username"
+              type="text"
+              placeholder="Enter your username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+              style={{
+                marginBottom: "1rem",
+                padding: "0.75rem",
+                width: "100%",
+                borderRadius: "4px",
+                border: "1px solid #ccc",
               }}
             />
             <label htmlFor="password" style={{ textAlign: "left" }}>

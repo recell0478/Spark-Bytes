@@ -8,6 +8,7 @@ export const Navbar = () => {
       <ul className={styles.menuItems}>
         <li>
           <Link to="/">Home</Link>
+
         </li>
         <li>
           <Link to="/">Create Events</Link>
