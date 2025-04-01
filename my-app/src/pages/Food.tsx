@@ -18,12 +18,32 @@ function Food() {
           style={{
             fontFamily: "'Abhaya Libre', serif",
             fontWeight: 800,
+            fontSize: "80px",
+
+            marginTop: "250px",
           }}
         >
           Sign Up for Free Food!
         </h1>
-        <div style={{ marginBottom: "40px" }}>
-          {/* Pass isSignedUp and handleSignUpClick to EventCard */}
+        <div
+          style={{
+            marginBottom: "40px",
+            display: "flex", // Use flexbox to layout children
+            flexDirection: "column", // Align children vertically (column direction)
+            justifyContent: "space-between", // Space out the cards evenly
+            alignItems: "center", // Horizontally center the content
+            height: "100%",
+            gap: "20px",
+          }}
+        >
+          <EventCard
+            isSignedUp={isSignedUp}
+            onSignUpClick={handleSignUpClick}
+          />
+          <EventCard
+            isSignedUp={isSignedUp}
+            onSignUpClick={handleSignUpClick}
+          />
           <EventCard
             isSignedUp={isSignedUp}
             onSignUpClick={handleSignUpClick}

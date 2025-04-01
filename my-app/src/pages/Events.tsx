@@ -16,7 +16,7 @@ function Events() {
           style={{
             fontFamily: "'Abhaya Libre', serif",
             fontWeight: 800,
-            fontSize: "50px",
+            fontSize: "80px",
           }}
         >
           Create an Event!
