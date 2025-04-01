@@ -13,22 +13,52 @@ export default function Home() {
     <div>
       <Navbar />
       <div style={{ marginTop: "250px" }}>
-        <h1
-          style={{
-            fontFamily: "'Abhaya Libre', serif",
-            fontWeight: 800,
-          }}
-        >
-          Free Food, Less Waste: A Sustainable Campus Solution
-        </h1>
-        <img src={dog} alt="dog" style={{ width: "300px" }} />
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <img
+            src={dog}
+            alt="dog"
+            style={{ width: "300px", marginRight: "20px" }}
+          />
+
+          <div>
+            <h1
+              style={{
+                fontFamily: "'Abhaya Libre', serif",
+                fontWeight: 800,
+                fontSize: "100px",
+              }}
+            >
+              Free Food, Less Waste:
+            </h1>
+            <h1
+              style={{
+                fontFamily: "'Abhaya Libre', serif",
+                fontWeight: 800,
+                fontSize: "100px",
+              }}
+            >
+              A Sustainable Campus Solution
+            </h1>
+            {/* <h1
+              style={{
+                fontFamily: "'Abhaya Libre', serif",
+                fontWeight: 800,
+                paddingLeft: "200px",
+                fontSize: "100px",
+              }}
+            >
+              Campus Solution
+            </h1> */}
+          </div>
+        </div>
+
         <Divider
           style={{
             borderColor: "#333", // Darker color
             margin: "20px auto",
             marginTop: "80px",
           }}
-        />{" "}
+        />
         <h2 style={{ fontFamily: "'Abhaya Libre', serif", fontSize: "50px" }}>
           What is Spark!Bytes?
         </h2>
