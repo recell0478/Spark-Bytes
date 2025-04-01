@@ -1,184 +1,198 @@
 import React, { useState } from "react";
-import { Layout } from "antd";
-import { supabase } from "../supabaseClient";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "../supabaseClient";
+import { UserOutlined, MailOutlined, LockOutlined } from "@ant-design/icons";
 
 const SignUp: React.FC = () => {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [confirmPassword, setConfirmPassword] = useState<string>("");
-  const [username, setUsername] = useState<string>("");
   const navigate = useNavigate();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (password !== confirmPassword) {
-      alert("Passwords do not match");
+      alert("Passwords do not match!");
       return;
     }
-  
+
     try {
-      // 1. Create auth user
-      const { data: authData, error: authError } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email,
         password,
+        options: {
+          data: { name },
+        },
       });
-      
-      if (authError) throw authError;
-  
-      // 2. Insert into public.users table
-      const { error: dbError } = await supabase
-        .from("users")
-        .insert([{ username, email }]);
-  
-      if (dbError) throw dbError;
-      
-      // Redirect to home
+      if (error) throw error;
       navigate("/");
-    } catch (error) {
-      console.error("Error:", error);
-      alert("Registration failed");
+    } catch (err) {
+      console.error("Error signing up:", err);
     }
   };
 
   return (
-    <Layout>
+    <div style={{ display: "flex", height: "100vh", fontFamily: "serif" }}>
+      {/* LEFT - Welcome Panel */}
       <div
-        className="container"
         style={{
+          flex: 1,
+          backgroundColor: "#d80000",
+          color: "white",
           display: "flex",
-          justifyContent: "center",
-          padding: "2rem",
-          marginTop: "80px", // Added marginTop to ensure the form starts below the navbar
+          flexDirection: "column",
+          padding: "2rem 3rem",
         }}
       >
-        <div
-          style={{
-            width: "600px", // Increased width for horizontal expansion
-            maxWidth: "100%",
-            display: "flex",
-            flexDirection: "column",
-            padding: "2rem",
-            border: "1px solid #ddd", // Optional: adds border around the form
-            borderRadius: "8px", // Rounded corners for the form
-            backgroundColor: "#f9f9f9", // Light background for form area
-          }}
-        >
-          <h2>Create an Account</h2>
+        {/* Logo */}
+        <div style={{ marginBottom: "2rem" }}>
+          <img src="/logo.png" alt="SparkBytes logo" style={{ width: "40px", marginRight: "8px" }} />
+          <span style={{ fontWeight: "bold", fontSize: "1.2rem" }}>SparkBytes!</span>
+        </div>
 
-          <form
-            onSubmit={handleSubmit}
-            style={{ display: "flex", flexDirection: "column" }}
-          >
-            <label htmlFor="email" style={{ textAlign: "left" }}>
-              BU Email
-            </label>
-            <input
-              id="email"
-              type="email"
-              placeholder="Enter your BU email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              style={{
-                marginBottom: "1rem",
-                padding: "0.75rem",
-                width: "100%", // Full width for the input
-                borderRadius: "4px",
-                border: "1px solid #ccc", // Light border
-              }}
-            />
-            <label htmlFor="username" style={{ textAlign: "left" }}>
-              Username
-            </label>
-            <input
-              id="username"
-              type="text"
-              placeholder="Enter your username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-              style={{
-                marginBottom: "1rem",
-                padding: "0.75rem",
-                width: "100%",
-                borderRadius: "4px",
-                border: "1px solid #ccc",
-              }}
-            />
-            <label htmlFor="password" style={{ textAlign: "left" }}>
-              Password
-            </label>
-            <input
-              id="password"
-              type="password"
-              placeholder="Enter your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              style={{
-                marginBottom: "1rem",
-                padding: "0.75rem",
-                width: "100%", // Full width for the input
-                borderRadius: "4px",
-                border: "1px solid #ccc", // Light border
-              }}
-            />
-            <label htmlFor="confirmPassword" style={{ textAlign: "left" }}>
-              Confirm Password
-            </label>
-            <input
-              id="confirmPassword"
-              type="password"
-              placeholder="Confirm your password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              required
-              style={{
-                marginBottom: "1rem",
-                padding: "0.75rem",
-                width: "100%", // Full width for the input
-                borderRadius: "4px",
-                border: "1px solid #ccc", // Light border
-              }}
-            />
-            <button
-              type="submit"
-              style={{
-                backgroundColor: "#c00",
-                color: "#fff",
-                padding: "0.75rem",
-                border: "none",
-                cursor: "pointer",
-                marginBottom: "1rem",
-                borderRadius: "4px", // Rounded corners for the button
-                width: "100%", // Full width for the button
-              }}
-            >
-              Sign Up
-            </button>
-          </form>
-          <a href="#" style={{ display: "block", margin: "1rem 0" }}>
-            Forgot Password
-          </a>
+        {/* Message */}
+        <div style={{ margin: "auto", textAlign: "center", maxWidth: "320px" }}>
+          <h2 style={{ fontSize: "2rem", fontWeight: "bold" }}>Welcome Back!</h2>
+          <p style={{ marginTop: "1rem", fontSize: "1.1rem" }}>
+            To learn more about the food at the events, please login with your personal info
+          </p>
           <a href="/signin">
             <button
               style={{
-                backgroundColor: "#c00",
-                color: "#fff",
-                padding: "0.75rem",
-                border: "none",
+                marginTop: "2rem",
+                backgroundColor: "transparent",
+                border: "1.5px solid white",
+                borderRadius: "15px",
+                padding: "0.75rem 2rem",
+                fontSize: "1rem",
+                color: "white",
+                fontWeight: "bold",
                 cursor: "pointer",
-                width: "100%", // Full width for the button
-                borderRadius: "4px", // Rounded corners for the button
               }}
             >
-              Already have an account? Sign In
+              SIGN IN
             </button>
           </a>
         </div>
       </div>
-    </Layout>
+
+      {/* RIGHT - Sign Up Form */}
+      <div
+        style={{
+          flex: 1,
+          padding: "2rem 4rem",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        <div style={{ margin: "auto", width: "100%", maxWidth: "400px" }}>
+          <h2 style={{ fontSize: "1.8rem", fontWeight: "bold", marginBottom: "1.5rem" }}>
+            Get Access to Free Food — Sign Up Now!
+          </h2>
+
+          <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column" }}>
+            {/* Name */}
+            <div style={{ position: "relative", marginBottom: "1rem" }}>
+              <UserOutlined style={{ position: "absolute", left: "12px", top: "12px", color: "#888" }} />
+              <input
+                type="text"
+                placeholder="Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                style={{
+                  width: "100%",
+                  padding: "0.75rem 0.75rem 0.75rem 2.5rem",
+                  borderRadius: "4px",
+                  border: "1px solid #ccc",
+                  backgroundColor: "#f1f1f1",
+                }}
+              />
+            </div>
+
+            {/* Email */}
+            <div style={{ position: "relative", marginBottom: "1rem" }}>
+              <MailOutlined style={{ position: "absolute", left: "12px", top: "12px", color: "#888" }} />
+              <input
+                type="email"
+                placeholder="BU Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                style={{
+                  width: "100%",
+                  padding: "0.75rem 0.75rem 0.75rem 2.5rem",
+                  borderRadius: "4px",
+                  border: "1px solid #ccc",
+                  backgroundColor: "#f1f1f1",
+                }}
+              />
+            </div>
+
+            {/* Password */}
+            <div style={{ position: "relative", marginBottom: "1rem" }}>
+              <LockOutlined style={{ position: "absolute", left: "12px", top: "12px", color: "#888" }} />
+              <input
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                style={{
+                  width: "100%",
+                  padding: "0.75rem 0.75rem 0.75rem 2.5rem",
+                  borderRadius: "4px",
+                  border: "1px solid #ccc",
+                  backgroundColor: "#f1f1f1",
+                }}
+              />
+            </div>
+
+            {/* Confirm Password */}
+            <div style={{ position: "relative", marginBottom: "1.5rem" }}>
+              <LockOutlined style={{ position: "absolute", left: "12px", top: "12px", color: "#888" }} />
+              <input
+                type="password"
+                placeholder="Verify Password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+                style={{
+                  width: "100%",
+                  padding: "0.75rem 0.75rem 0.75rem 2.5rem",
+                  borderRadius: "4px",
+                  border: "1px solid #ccc",
+                  backgroundColor: "#f1f1f1",
+                }}
+              />
+            </div>
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              style={{
+                backgroundColor: "#d80000",
+                color: "white",
+                padding: "0.75rem",
+                fontSize: "1rem",
+                fontWeight: "bold",
+                borderRadius: "20px",
+                border: "none",
+                cursor: "pointer",
+              }}
+            >
+              SIGN UP
+            </button>
+          </form>
+        </div>
+
+        {/* Footer */}
+        <footer style={{ textAlign: "center", marginTop: "auto", fontSize: "0.85rem", color: "#666" }}>
+          ©BU Spark Bytes 2025
+        </footer>
+      </div>
+    </div>
   );
 };
 

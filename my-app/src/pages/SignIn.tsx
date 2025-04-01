@@ -1,13 +1,12 @@
-// SignIn.tsx
+// Sign-In page
 import React, { useState } from "react";
-import { Layout } from "antd";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../supabaseClient";
-
+import { MailOutlined, LockOutlined } from "@ant-design/icons";
 
 const SignIn: React.FC = () => {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -20,113 +19,123 @@ const SignIn: React.FC = () => {
       if (error) throw error;
       navigate("/");
     } catch (error) {
-      console.error('Error signing in:', error);
+      console.error("Error signing in:", error);
     }
   };
 
   return (
-    <Layout>
-      <div
-        className="container"
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          padding: "2rem",
-          marginTop: "80px", // Added marginTop for space between navbar and form
-        }}
-      >
-        <div
-          style={{
-            width: "600px", // Consistent width
-            maxWidth: "100%",
-            display: "flex",
-            flexDirection: "column",
-            padding: "2rem",
-            border: "1px solid #ddd",
-            borderRadius: "8px",
-            backgroundColor: "#f9f9f9",
-          }}
-        >
-          <h2>Welcome Back!</h2> {/* Changed text for consistency */}
-          <form
-            onSubmit={handleSubmit}
-            style={{ display: "flex", flexDirection: "column" }}
-          >
-            <label htmlFor="email" style={{ textAlign: "left" }}>
-              BU Email
-            </label>
-            <input
-              id="email"
-              type="email"
-              placeholder="Enter your BU email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              style={{
-                marginBottom: "1rem",
-                padding: "0.75rem",
-                width: "100%", // Full width input
-                borderRadius: "4px",
-                border: "1px solid #ccc",
-              }}
-            />
+    <div style={{ display: "flex", height: "100vh", fontFamily: "serif" }}>
+      {/* LEFT SIDE */}
+      <div style={{ flex: 1, padding: "2rem 4rem", display: "flex", flexDirection: "column" }}>
+        {/* Logo */}
+        <div style={{ marginBottom: "2rem" }}>
+          <img src="/logo.png" alt="SparkBytes logo" style={{ width: "40px", marginRight: "8px" }} />
+          <span style={{ fontWeight: "bold", fontSize: "1.2rem" }}>SparkBytes!</span>
+        </div>
 
-            <label htmlFor="password" style={{ textAlign: "left" }}>
-              Password
-            </label>
-            <input
-              id="password"
-              type="password"
-              placeholder="Enter your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              style={{
-                marginBottom: "1rem",
-                padding: "0.75rem",
-                width: "100%", // Full width input
-                borderRadius: "4px",
-                border: "1px solid #ccc",
-              }}
-            />
+        {/* Form container */}
+        <div style={{ margin: "auto", width: "100%", maxWidth: "400px" }}>
+          <h2 style={{ fontSize: "1.8rem", fontWeight: "bold", marginBottom: "1.5rem" }}>
+            Sign In to SparkBytes!
+          </h2>
+          <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column" }}>
+            <div style={{ position: "relative", marginBottom: "1rem" }}>
+              <MailOutlined style={{ position: "absolute", left: "12px", top: "12px", color: "#888" }} />
+              <input
+                type="email"
+                placeholder="BU Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                style={{
+                  width: "100%",
+                  padding: "0.75rem 0.75rem 0.75rem 2.5rem",
+                  borderRadius: "4px",
+                  border: "1px solid #ccc",
+                  backgroundColor: "#f1f1f1",
+                }}
+              />
+            </div>
+
+            <div style={{ position: "relative", marginBottom: "1rem" }}>
+              <LockOutlined style={{ position: "absolute", left: "12px", top: "12px", color: "#888" }} />
+              <input
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                style={{
+                  width: "100%",
+                  padding: "0.75rem 0.75rem 0.75rem 2.5rem",
+                  borderRadius: "4px",
+                  border: "1px solid #ccc",
+                  backgroundColor: "#f1f1f1",
+                }}
+              />
+            </div>
+
+            <a href="#" style={{ textAlign: "center", marginBottom: "1rem" }}>
+              Forgot Password?
+            </a>
 
             <button
               type="submit"
               style={{
-                backgroundColor: "#c00",
-                color: "#fff",
-                padding: "0.75rem",
+                backgroundColor: "#d80000",
+                color: "white",
                 border: "none",
+                borderRadius: "20px",
+                padding: "0.75rem",
+                fontWeight: "bold",
+                fontSize: "1rem",
                 cursor: "pointer",
-                marginBottom: "1rem",
-                borderRadius: "4px", // Rounded button
-                width: "100%", // Full width button
               }}
             >
-              Sign In
+              SIGN IN
             </button>
           </form>
-          <a href="#" style={{ display: "block", margin: "1rem 0" }}>
-            Forgot Password
-          </a>
-          <a href="/signup">
-            <button
-              style={{
-                backgroundColor: "#c00",
-                color: "#fff",
-                padding: "0.75rem",
-                border: "none",
-                cursor: "pointer",
-                width: "100%",
-                borderRadius: "4px", // Rounded button
-              }}
-            >
-              Don't have an account? Sign Up
-            </button>
-          </a>
         </div>
+
+        {/* Footer */}
+        <footer style={{ textAlign: "center", marginTop: "auto", fontSize: "0.85rem", color: "#666" }}>
+          ©BU Spark Bytes 2025
+        </footer>
       </div>
-    </Layout>
+
+      {/* RIGHT SIDE */}
+      <div
+        style={{
+          flex: 1,
+          backgroundColor: "#d80000",
+          color: "white",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          padding: "2rem",
+        }}
+      >
+        <h2 style={{ fontSize: "2rem", fontWeight: "bold" }}>Hello Friend,</h2>
+        <p style={{ fontSize: "1.1rem", textAlign: "center", maxWidth: "300px", margin: "1rem 0" }}>
+          Enter your personal details and start getting free food with us!
+        </p>
+        <a href="/signup">
+          <button
+            style={{
+              backgroundColor: "transparent",
+              border: "1.5px solid white",
+              color: "white",
+              borderRadius: "15px",
+              padding: "0.75rem 2rem",
+              fontSize: "1rem",
+              fontWeight: "bold",
+              cursor: "pointer",
+            }}
+          >
+            SIGN UP
+          </button>
+        </a>
+      </div>
+    </div>
   );
 };
 

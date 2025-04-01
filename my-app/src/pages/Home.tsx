@@ -3,7 +3,6 @@ import "@fontsource/abhaya-libre/800.css";
 
 import dog from "../assets/dog.png";
 import { Button, Divider } from "antd";
-import { Route, Routes } from "react-router";
 import { useNavigate } from "react-router-dom";
 import { Navbar } from "./Navbar";
 import Footer from "./Footer";
