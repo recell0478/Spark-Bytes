@@ -15,7 +15,10 @@ export const Navbar = () => {
           <Link to="/home">Home</Link>
         </li>
         <li>
-          <Link to="/events">Events</Link>
+          <Link to="/events">Create Events</Link>
+        </li>
+        <li>
+          <Link to="/food">Food Sign Up</Link>
         </li>
         <li>
           <Link to="/profile">

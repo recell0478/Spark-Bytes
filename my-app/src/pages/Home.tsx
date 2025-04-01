@@ -39,16 +39,6 @@ export default function Home() {
             >
               A Sustainable Campus Solution
             </h1>
-            {/* <h1
-              style={{
-                fontFamily: "'Abhaya Libre', serif",
-                fontWeight: 800,
-                paddingLeft: "200px",
-                fontSize: "100px",
-              }}
-            >
-              Campus Solution
-            </h1> */}
           </div>
         </div>
 
@@ -78,8 +68,9 @@ export default function Home() {
             padding: "15px 40px", // More padding for a bigger button
             height: "auto", // Allows the height to adjust dynamically
             minWidth: "180px", // Ensures the button is wide enough
+            marginBottom: "40px",
           }}
-          onClick={() => navigate("/events")}
+          onClick={() => navigate("/food")}
         >
           Try Spark!Bytes
         </Button>

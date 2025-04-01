@@ -3,19 +3,20 @@ import React from "react";
 import EventCard from "../EventCard";
 import { Divider } from "antd";
 import { Navbar } from "./Navbar";
-
+import Footer from "./Footer";
 function Events() {
   const onFinish = (values: any) => {
     console.log("Form values: ", values);
   };
   return (
-    <div className="min-h-screen flex flex-col">
+    <div>
       <Navbar />
       <div style={{ marginTop: "250px" }}>
         <h1
           style={{
             fontFamily: "'Abhaya Libre', serif",
             fontWeight: 800,
+            fontSize: "50px",
           }}
         >
           Create an Event!
@@ -53,11 +54,21 @@ function Events() {
           </Form.Item>
 
           <Form.Item
-            label="Time"
-            name="time"
-            rules={[{ required: true, message: "Please input the time!" }]}
+            label="Start Time"
+            name="startTime"
+            rules={[
+              { required: true, message: "Please input the start time!" },
+            ]}
           >
-            <Input type="time" size="large" placeholder="Time" />
+            <Input type="time" size="large" placeholder="Start Time" />
+          </Form.Item>
+
+          <Form.Item
+            label="End Time"
+            name="endTime"
+            rules={[{ required: true, message: "Please input the end time!" }]}
+          >
+            <Input type="time" size="large" placeholder="End Time" />
           </Form.Item>
 
           <Form.Item
@@ -95,23 +106,8 @@ function Events() {
             </Button>
           </Form.Item>
         </Form>
-
-        <Divider
-          style={{
-            borderColor: "#333", // Darker color
-            margin: "20px auto",
-          }}
-        />
-        <h1
-          style={{
-            fontFamily: "'Abhaya Libre', serif",
-            fontWeight: 800,
-          }}
-        >
-          Sign Up for Free Food!
-        </h1>
-        <EventCard />
       </div>
+      <Footer />
     </div>
   );
 }
