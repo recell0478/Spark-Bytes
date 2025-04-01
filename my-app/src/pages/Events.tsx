@@ -1,10 +1,13 @@
-import { Button } from "antd";
+import { Button, Form, Input } from "antd";
 import React from "react";
 import EventCard from "../EventCard";
 import { Divider } from "antd";
 import { Navbar } from "./Navbar";
 
 function Events() {
+  const onFinish = (values: any) => {
+    console.log("Form values: ", values);
+  };
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -17,124 +20,82 @@ function Events() {
         >
           Create an Event!
         </h1>
-        <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
-          <li
-            style={{
-              marginBottom: "15px",
-              fontSize: "30px",
-              display: "flex",
-              alignItems: "center",
-              gap: "15px",
-            }}
-          >
-            <label htmlFor="eventName">Event Name:</label>
-            <input
-              type="text"
-              id="eventName"
-              name="eventName"
-              style={{ fontSize: "24px", padding: "8px" }}
-            />
-          </li>
-          <li
-            style={{
-              marginBottom: "15px",
-              fontSize: "30px",
-              display: "flex",
-              alignItems: "center",
-              gap: "15px",
-            }}
-          >
-            <label htmlFor="quantity">Quantity:</label>
-            <input
-              type="number"
-              id="quantity"
-              name="quantity"
-              style={{ fontSize: "24px", padding: "8px" }}
-            />
-          </li>
-          <li
-            style={{
-              marginBottom: "15px",
-              fontSize: "30px",
-              display: "flex",
-              alignItems: "center",
-              gap: "15px",
-            }}
-          >
-            <label htmlFor="location">Location:</label>
-            <input
-              type="text"
-              id="location"
-              name="location"
-              style={{ fontSize: "24px", padding: "8px" }}
-            />
-          </li>
-          <li
-            style={{
-              marginBottom: "15px",
-              fontSize: "30px",
-              display: "flex",
-              alignItems: "center",
-              gap: "15px",
-            }}
-          >
-            <label htmlFor="time">Time:</label>
-            <input
-              type="time"
-              id="time"
-              name="time"
-              style={{ fontSize: "24px", padding: "8px" }}
-            />
-          </li>
-          <li
-            style={{
-              marginBottom: "15px",
-              fontSize: "30px",
-              display: "flex",
-              alignItems: "center",
-              gap: "15px",
-            }}
-          >
-            <label htmlFor="allergy">Allergy:</label>
-            <input
-              type="text"
-              id="allergy"
-              name="allergy"
-              style={{ fontSize: "24px", padding: "8px" }}
-            />
-          </li>
-          <li
-            style={{
-              marginBottom: "15px",
-              fontSize: "30px",
-              display: "flex",
-              alignItems: "center",
-              gap: "15px",
-            }}
-          >
-            <label htmlFor="foodDescription">Food Description:</label>
-            <textarea
-              id="foodDescription"
-              name="foodDescription"
-              style={{ fontSize: "24px", padding: "8px", width: "100%" }}
-            />
-          </li>
-        </ul>
 
-        <Button
-          type="primary"
-          style={{
-            backgroundColor: "#E71F1F",
-            borderColor: "#E71F1F",
-            fontSize: "35px",
-            padding: "20px 40px", // Increases inner spacing
-            height: "auto", // Ensures it expands as needed
-            minWidth: "250px", // Ensures it’s wide enough
-            marginBottom: "40px",
-          }}
+        <Form
+          layout="vertical"
+          onFinish={onFinish}
+          style={{ maxWidth: "600px", margin: "0 auto" }}
         >
-          Create Event
-        </Button>
+          <Form.Item
+            label="Event Name"
+            name="eventName"
+            rules={[
+              { required: true, message: "Please input the event name!" },
+            ]}
+          >
+            <Input size="large" placeholder="Event Name" />
+          </Form.Item>
+
+          <Form.Item
+            label="Quantity"
+            name="quantity"
+            rules={[{ required: true, message: "Please input the quantity!" }]}
+          >
+            <Input type="number" size="large" placeholder="Quantity" />
+          </Form.Item>
+
+          <Form.Item
+            label="Location"
+            name="location"
+            rules={[{ required: true, message: "Please input the location!" }]}
+          >
+            <Input size="large" placeholder="Location" />
+          </Form.Item>
+
+          <Form.Item
+            label="Time"
+            name="time"
+            rules={[{ required: true, message: "Please input the time!" }]}
+          >
+            <Input type="time" size="large" placeholder="Time" />
+          </Form.Item>
+
+          <Form.Item
+            label="Allergy"
+            name="allergy"
+            rules={[
+              { required: false, message: "Please input any allergies!" },
+            ]}
+          >
+            <Input size="large" placeholder="Allergy" />
+          </Form.Item>
+
+          <Form.Item
+            label="Food Description"
+            name="foodDescription"
+            rules={[
+              { required: true, message: "Please input the food description!" },
+            ]}
+          >
+            <Input.TextArea
+              size="large"
+              placeholder="Food Description"
+              rows={4}
+            />
+          </Form.Item>
+
+          <Form.Item>
+            <Button
+              type="primary"
+              htmlType="submit"
+              size="large"
+              style={{ backgroundColor: "#E71F1F", borderColor: "#E71F1F" }}
+            >
+              Create Event
+            </Button>
+          </Form.Item>
+        </Form>
+
         <Divider
           style={{
             borderColor: "#333", // Darker color
