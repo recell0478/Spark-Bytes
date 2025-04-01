@@ -1,23 +1,21 @@
 import styles from "./Navbar.module.css";
 import { Link } from "react-router-dom";
 import profile from "../assets/profile.png";
+import dog from "../assets/dog.png";
+
 export const Navbar = () => {
   return (
     <nav className={styles.navbar}>
-      <h1 className={styles.title}>Spark!Bytes</h1>
+      <div className={styles.spark}>
+        <img src={dog} alt="Dog" className={styles.dog} />
+        <h1 className={styles.title}>Spark!Bytes</h1>
+      </div>
       <ul className={styles.menuItems}>
         <li>
-          <Link to="/">Home</Link>
-
+          <Link to="/home">Home</Link>
         </li>
         <li>
-          <Link to="/">Create Events</Link>
-        </li>
-        <li>
-          <Link to="/signin">Sign In</Link>
-        </li>
-        <li>
-          <Link to="/signup">Sign Up</Link>
+          <Link to="/events">Events</Link>
         </li>
         <li>
           <Link to="/profile">
