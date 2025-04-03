@@ -1,0 +1,115 @@
+.page {
+    font-family: Arial, sans-serif;
+    background-color: #fff;
+    min-height: 100vh;
+}
+
+/* ---------- Top Navigation ---------- */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #e71f1f;
+    padding: 1rem 2rem;
+    color: white;
+}
+
+.logoSection {
+    display: flex;
+    align-items: center;
+}
+
+.logoText {
+    font-weight: bold;
+    font-size: 1.3rem;
+    margin-left: 0.5rem;
+}
+
+.nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.avatarCircle {
+    width: 36px;
+    height: 36px;
+    background-color: #222;
+    border-radius: 50%;
+}
+
+/* ---------- Main Profile Container ---------- */
+.profileContainer {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    text-align: left;
+}
+
+.profileTitle {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+/* ---------- Avatar with Edit Icon ---------- */
+.profileAvatar {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 2rem;
+}
+
+.avatarIcon {
+    position: relative;
+    width: 100px; 
+    height: 100px;
+    background-color: #eee;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.editIcon {
+    position: absolute;
+    bottom: 6px;
+    right: 6x;
+    font-size: 0.9rem;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    padding: 0.2rem 0.3rem;
+    cursor: pointer;
+}
+
+/* ---------- Field Blocks ---------- */
+.profileField {
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid #aaa;
+    padding-bottom: 1rem;
+}
+
+.profileField h4 {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 0.25rem;
+}
+
+profileField p {
+    font-size: 1rem;
+    margin: 0;
+    color: #333;
+}
+
+@media (max-width: 768px) {
+    .profileContainer {
+        padding: 1rem;
+    }
+
+    .nav {
+        gap: 1rem;
+    }
+}
