@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { supabase } from '../supabaseClient';
 import Image from 'next/image';
-import styles from '../styles/Profile.module.css';
+import styles from './Profile.module.css';
 
 interface UserProfile {
     name: string;
