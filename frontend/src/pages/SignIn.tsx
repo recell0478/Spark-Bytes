@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../supabaseClient";
 import { MailOutlined, LockOutlined } from "@ant-design/icons";
+import { Navbar } from "./Navbar";
 
 const SignIn: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -26,6 +27,8 @@ const SignIn: React.FC = () => {
   return (
     <div style={{ display: "flex", height: "100vh", fontFamily: "serif" }}>
       {/* LEFT SIDE */}
+      <Navbar />
+
       <div
         style={{
           flex: 1,

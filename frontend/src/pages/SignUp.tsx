@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../supabaseClient";
 import { UserOutlined, MailOutlined, LockOutlined } from "@ant-design/icons";
+import { Navbar } from "./Navbar";
 
 const SignUp: React.FC = () => {
   const navigate = useNavigate();
@@ -35,6 +36,8 @@ const SignUp: React.FC = () => {
   return (
     <div style={{ display: "flex", height: "100vh", fontFamily: "serif" }}>
       {/* LEFT - Welcome Panel */}
+      <Navbar />
+
       <div
         style={{
           flex: 1,
@@ -47,15 +50,24 @@ const SignUp: React.FC = () => {
       >
         {/* Logo */}
         <div style={{ marginBottom: "2rem" }}>
-          <img src="/logo.png" alt="SparkBytes logo" style={{ width: "40px", marginRight: "8px" }} />
-          <span style={{ fontWeight: "bold", fontSize: "1.2rem" }}>SparkBytes!</span>
+          <img
+            src="/logo.png"
+            alt="SparkBytes logo"
+            style={{ width: "40px", marginRight: "8px" }}
+          />
+          <span style={{ fontWeight: "bold", fontSize: "1.2rem" }}>
+            SparkBytes!
+          </span>
         </div>
 
         {/* Message */}
         <div style={{ margin: "auto", textAlign: "center", maxWidth: "320px" }}>
-          <h2 style={{ fontSize: "2rem", fontWeight: "bold" }}>Welcome Back!</h2>
+          <h2 style={{ fontSize: "2rem", fontWeight: "bold" }}>
+            Welcome Back!
+          </h2>
           <p style={{ marginTop: "1rem", fontSize: "1.1rem" }}>
-            To learn more about the food at the events, please login with your personal info
+            To learn more about the food at the events, please login with your
+            personal info
           </p>
           <a href="/signin">
             <button
@@ -87,14 +99,30 @@ const SignUp: React.FC = () => {
         }}
       >
         <div style={{ margin: "auto", width: "100%", maxWidth: "400px" }}>
-          <h2 style={{ fontSize: "1.8rem", fontWeight: "bold", marginBottom: "1.5rem" }}>
+          <h2
+            style={{
+              fontSize: "1.8rem",
+              fontWeight: "bold",
+              marginBottom: "1.5rem",
+            }}
+          >
             Get Access to Free Food — Sign Up Now!
           </h2>
 
-          <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column" }}>
+          <form
+            onSubmit={handleSubmit}
+            style={{ display: "flex", flexDirection: "column" }}
+          >
             {/* Name */}
             <div style={{ position: "relative", marginBottom: "1rem" }}>
-              <UserOutlined style={{ position: "absolute", left: "12px", top: "12px", color: "#888" }} />
+              <UserOutlined
+                style={{
+                  position: "absolute",
+                  left: "12px",
+                  top: "12px",
+                  color: "#888",
+                }}
+              />
               <input
                 type="text"
                 placeholder="Name"
@@ -113,7 +141,14 @@ const SignUp: React.FC = () => {
 
             {/* Email */}
             <div style={{ position: "relative", marginBottom: "1rem" }}>
-              <MailOutlined style={{ position: "absolute", left: "12px", top: "12px", color: "#888" }} />
+              <MailOutlined
+                style={{
+                  position: "absolute",
+                  left: "12px",
+                  top: "12px",
+                  color: "#888",
+                }}
+              />
               <input
                 type="email"
                 placeholder="BU Email"
@@ -132,7 +167,14 @@ const SignUp: React.FC = () => {
 
             {/* Password */}
             <div style={{ position: "relative", marginBottom: "1rem" }}>
-              <LockOutlined style={{ position: "absolute", left: "12px", top: "12px", color: "#888" }} />
+              <LockOutlined
+                style={{
+                  position: "absolute",
+                  left: "12px",
+                  top: "12px",
+                  color: "#888",
+                }}
+              />
               <input
                 type="password"
                 placeholder="Password"
@@ -151,7 +193,14 @@ const SignUp: React.FC = () => {
 
             {/* Confirm Password */}
             <div style={{ position: "relative", marginBottom: "1.5rem" }}>
-              <LockOutlined style={{ position: "absolute", left: "12px", top: "12px", color: "#888" }} />
+              <LockOutlined
+                style={{
+                  position: "absolute",
+                  left: "12px",
+                  top: "12px",
+                  color: "#888",
+                }}
+              />
               <input
                 type="password"
                 placeholder="Verify Password"
@@ -188,7 +237,14 @@ const SignUp: React.FC = () => {
         </div>
 
         {/* Footer */}
-        <footer style={{ textAlign: "center", marginTop: "auto", fontSize: "0.85rem", color: "#666" }}>
+        <footer
+          style={{
+            textAlign: "center",
+            marginTop: "auto",
+            fontSize: "0.85rem",
+            color: "#666",
+          }}
+        >
           ©BU Spark Bytes 2025
         </footer>
       </div>

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import profile from "../assets/profile.png";
 import dog from "../assets/dog.png";
 
-export const Navbar = () => {
+export const Navbar = ({ isLoggedIn }) => {
   return (
     <nav className={styles.navbar}>
       <div className={styles.spark}>
@@ -20,11 +20,27 @@ export const Navbar = () => {
         <li>
           <Link to="/food">Food Sign Up</Link>
         </li>
-        <li>
-          <Link to="/profile">
-            <img src={profile} alt="Profile" className={styles.profileImage} />
-          </Link>
-        </li>
+
+        {!isLoggedIn ? (
+          <>
+            <li>
+              <Link to="/signin">Sign In</Link>
+            </li>
+            <li>
+              <Link to="/signup">Sign Up</Link>
+            </li>
+          </>
+        ) : (
+          <li>
+            <Link to="/profile">
+              <img
+                src={profile}
+                alt="Profile"
+                className={styles.profileImage}
+              />
+            </Link>
+          </li>
+        )}
       </ul>
     </nav>
   );

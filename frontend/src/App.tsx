@@ -20,7 +20,13 @@ function LayoutWithConditionals() {
   const location = useLocation();
 
   // These routes should NOT show the Navbar
-  const noNavbarRoutes = ["/signin", "/signin", "/signup", "/sign-up", "/profile"]
+  const noNavbarRoutes = [
+    "/signin",
+    "/signin",
+    "/signup",
+    "/sign-up",
+    "/profile",
+  ];
 
   const shouldShowNavbar = !noNavbarRoutes.includes(
     location.pathname.toLowerCase()
@@ -35,12 +41,10 @@ function LayoutWithConditionals() {
         <Route path="/Home" element={<Home />} />
         <Route path="/Events" element={<Events />} />
         <Route path="/food" element={<Food />} />
-        <Route path="/sign-in" element={<SignIn />} />
-        <Route path="/sign-up" element={<SignUp />} />
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="/signup" element={<SignUp />} />
         <Route path="/profile" element={<Profile />} />
       </Routes>
-
-      <Footer />
     </>
   );
 }
