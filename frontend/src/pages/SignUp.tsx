@@ -41,7 +41,7 @@ const SignUp: React.FC = () => {
       <div
         style={{
           flex: 1,
-          backgroundColor: "#d80000",
+          backgroundColor: "#E71F1F",
           color: "white",
           display: "flex",
           flexDirection: "column",

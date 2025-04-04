@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "../supabaseClient";
 import { MailOutlined, LockOutlined } from "@ant-design/icons";
 import { Navbar } from "./Navbar";
+import Footer from "./Footer";
 
 const SignIn: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -48,7 +49,6 @@ const SignIn: React.FC = () => {
             SparkBytes!
           </span>
         </div>
-
         {/* Form container */}
         <div style={{ margin: "auto", width: "100%", maxWidth: "400px" }}>
           <h2
@@ -119,7 +119,7 @@ const SignIn: React.FC = () => {
             <button
               type="submit"
               style={{
-                backgroundColor: "#d80000",
+                backgroundColor: "#E71F1F",
                 color: "white",
                 border: "none",
                 borderRadius: "20px",
@@ -133,25 +133,13 @@ const SignIn: React.FC = () => {
             </button>
           </form>
         </div>
-
-        {/* Footer */}
-        <footer
-          style={{
-            textAlign: "center",
-            marginTop: "auto",
-            fontSize: "0.85rem",
-            color: "#666",
-          }}
-        >
-          ©BU Spark Bytes 2025
-        </footer>
       </div>
 
       {/* RIGHT SIDE */}
       <div
         style={{
           flex: 1,
-          backgroundColor: "#d80000",
+          backgroundColor: "#E71F1F",
           color: "white",
           display: "flex",
           flexDirection: "column",

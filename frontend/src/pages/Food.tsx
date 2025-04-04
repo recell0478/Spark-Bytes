@@ -12,7 +12,6 @@ function Food() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar />
       <div>
         <h1
           style={{
