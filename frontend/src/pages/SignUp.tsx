@@ -5,229 +5,159 @@ import { UserOutlined, MailOutlined, LockOutlined } from "@ant-design/icons";
 import { Navbar } from "./Navbar";
 
 const SignUp: React.FC = () => {
-  const navigate = useNavigate();
-  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (password !== confirmPassword) {
-      alert("Passwords do not match!");
-      return;
-    }
+    setError(null);
 
-    try {
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: { name },
-        },
-      });
-      if (error) throw error;
-      navigate("/");
-    } catch (err) {
-      console.error("Error signing up:", err);
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: { full_name: fullName },
+      },
+    });
+
+    if (error) {
+      setError(error.message);
+    } else {
+      navigate("/profile");
     }
   };
 
   return (
-    <div style={{ display: "flex", height: "100vh", fontFamily: "serif" }}>
-      {/* LEFT - Welcome Panel */}
-      <Navbar />
-
+    <div
+      style={{
+        display: "flex",
+        height: "100vh",
+        width: "100vw",
+        fontFamily: "Inter, sans-serif",
+        overflow: "hidden",
+      }}
+    >
+      {/* Left: Sign In prompt (red) */}
       <div
         style={{
           flex: 1,
-          backgroundColor: "#E71F1F",
-          color: "white",
+          backgroundColor: "#e71f1f",
+          color: "#fff",
           display: "flex",
           flexDirection: "column",
-          padding: "2rem 3rem",
+          justifyContent: "center",
+          alignItems: "center",
+          textAlign: "center",
+          padding: "2rem",
         }}
       >
-        {/* Logo */}
-        <div style={{ marginBottom: "2rem" }}>
-          <img
-            src="/logo.png"
-            alt="SparkBytes logo"
-            style={{ width: "40px", marginRight: "8px" }}
-          />
-          <span style={{ fontWeight: "bold", fontSize: "1.2rem" }}>
-            SparkBytes!
-          </span>
-        </div>
+        <h2 style={{ fontSize: "2.2rem", marginBottom: "1rem" }}>Welcome Back!</h2>
+        <p style={{ fontSize: "1.1rem", marginBottom: "3rem", lineHeight: 1.6 }}>
+          Already have an account? <br />
+          Sign in to access leftover food!
+        </p>
 
-        {/* Message */}
-        <div style={{ margin: "auto", textAlign: "center", maxWidth: "320px" }}>
-          <h2 style={{ fontSize: "2rem", fontWeight: "bold" }}>
-            Welcome Back!
-          </h2>
-          <p style={{ marginTop: "1rem", fontSize: "1.1rem" }}>
-            To learn more about the food at the events, please login with your
-            personal info
-          </p>
-          <a href="/signin">
-            <button
-              style={{
-                marginTop: "2rem",
-                backgroundColor: "transparent",
-                border: "1.5px solid white",
-                borderRadius: "15px",
-                padding: "0.75rem 2rem",
-                fontSize: "1rem",
-                color: "white",
-                fontWeight: "bold",
-                cursor: "pointer",
-              }}
-            >
-              SIGN IN
-            </button>
-          </a>
-        </div>
+        <button
+          onClick={() => navigate("/sign-in")}
+          style={{
+            backgroundColor: "transparent",
+            color: "#fff",
+            border: "2px solid #fff",
+            borderRadius: "25px",
+            padding: "0.75rem 2rem",
+            fontSize: "1rem",
+            fontWeight: "bold",
+            cursor: "pointer",
+          }}
+        >
+          SIGN IN
+        </button>
       </div>
 
-      {/* RIGHT - Sign Up Form */}
+      {/* Right: Sign Up form (white) */}
       <div
         style={{
           flex: 1,
-          padding: "2rem 4rem",
+          backgroundColor: "#fff",
           display: "flex",
-          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
-        <div style={{ margin: "auto", width: "100%", maxWidth: "400px" }}>
-          <h2
-            style={{
-              fontSize: "1.8rem",
-              fontWeight: "bold",
-              marginBottom: "1.5rem",
-            }}
-          >
-            Get Access to Free Food — Sign Up Now!
+        <div style={{ width: "100%", maxWidth: "400px", padding: "2rem" }}>
+          <h2 style={{ textAlign: "center", fontSize: "2rem", marginBottom: "2rem" }}>
+            Create an Account
           </h2>
 
-          <form
-            onSubmit={handleSubmit}
-            style={{ display: "flex", flexDirection: "column" }}
-          >
-            {/* Name */}
-            <div style={{ position: "relative", marginBottom: "1rem" }}>
-              <UserOutlined
-                style={{
-                  position: "absolute",
-                  left: "12px",
-                  top: "12px",
-                  color: "#888",
-                }}
-              />
-              <input
-                type="text"
-                placeholder="Name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-                style={{
-                  width: "100%",
-                  padding: "0.75rem 0.75rem 0.75rem 2.5rem",
-                  borderRadius: "4px",
-                  border: "1px solid #ccc",
-                  backgroundColor: "#f1f1f1",
-                }}
-              />
-            </div>
+          <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column" }}>
+            <label htmlFor="fullName" style={{ fontWeight: "bold", marginBottom: "0.5rem" }}>
+              Full Name
+            </label>
+            <input
+              id="fullName"
+              type="text"
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              placeholder="Enter your full name"
+              required
+              style={{
+                padding: "0.75rem",
+                marginBottom: "1.25rem",
+                border: "1px solid #ccc",
+                borderRadius: "6px",
+              }}
+            />
 
-            {/* Email */}
-            <div style={{ position: "relative", marginBottom: "1rem" }}>
-              <MailOutlined
-                style={{
-                  position: "absolute",
-                  left: "12px",
-                  top: "12px",
-                  color: "#888",
-                }}
-              />
-              <input
-                type="email"
-                placeholder="BU Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                style={{
-                  width: "100%",
-                  padding: "0.75rem 0.75rem 0.75rem 2.5rem",
-                  borderRadius: "4px",
-                  border: "1px solid #ccc",
-                  backgroundColor: "#f1f1f1",
-                }}
-              />
-            </div>
+            <label htmlFor="email" style={{ fontWeight: "bold", marginBottom: "0.5rem" }}>
+              BU Email
+            </label>
+            <input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter your BU email"
+              required
+              style={{
+                padding: "0.75rem",
+                marginBottom: "1.25rem",
+                border: "1px solid #ccc",
+                borderRadius: "6px",
+              }}
+            />
 
-            {/* Password */}
-            <div style={{ position: "relative", marginBottom: "1rem" }}>
-              <LockOutlined
-                style={{
-                  position: "absolute",
-                  left: "12px",
-                  top: "12px",
-                  color: "#888",
-                }}
-              />
-              <input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                style={{
-                  width: "100%",
-                  padding: "0.75rem 0.75rem 0.75rem 2.5rem",
-                  borderRadius: "4px",
-                  border: "1px solid #ccc",
-                  backgroundColor: "#f1f1f1",
-                }}
-              />
-            </div>
+            <label htmlFor="password" style={{ fontWeight: "bold", marginBottom: "0.5rem" }}>
+              Password
+            </label>
+            <input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Create a password"
+              required
+              style={{
+                padding: "0.75rem",
+                marginBottom: "1.25rem",
+                border: "1px solid #ccc",
+                borderRadius: "6px",
+              }}
+            />
 
-            {/* Confirm Password */}
-            <div style={{ position: "relative", marginBottom: "1.5rem" }}>
-              <LockOutlined
-                style={{
-                  position: "absolute",
-                  left: "12px",
-                  top: "12px",
-                  color: "#888",
-                }}
-              />
-              <input
-                type="password"
-                placeholder="Verify Password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-                style={{
-                  width: "100%",
-                  padding: "0.75rem 0.75rem 0.75rem 2.5rem",
-                  borderRadius: "4px",
-                  border: "1px solid #ccc",
-                  backgroundColor: "#f1f1f1",
-                }}
-              />
-            </div>
+            {error && <p style={{ color: "red", marginBottom: "1rem" }}>{error}</p>}
 
-            {/* Submit Button */}
             <button
               type="submit"
               style={{
-                backgroundColor: "#d80000",
-                color: "white",
+                backgroundColor: "#c00",
+                color: "#fff",
                 padding: "0.75rem",
-                fontSize: "1rem",
-                fontWeight: "bold",
-                borderRadius: "20px",
                 border: "none",
+                borderRadius: "6px",
+                fontWeight: "bold",
                 cursor: "pointer",
               }}
             >
@@ -235,18 +165,6 @@ const SignUp: React.FC = () => {
             </button>
           </form>
         </div>
-
-        {/* Footer */}
-        <footer
-          style={{
-            textAlign: "center",
-            marginTop: "auto",
-            fontSize: "0.85rem",
-            color: "#666",
-          }}
-        >
-          ©BU Spark Bytes 2025
-        </footer>
       </div>
     </div>
   );
