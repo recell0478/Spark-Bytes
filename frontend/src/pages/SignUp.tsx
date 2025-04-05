@@ -13,21 +13,26 @@ const SignUp: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: { full_name: fullName },
-      },
-    });
-
+  
+    const { data, error } = await supabase
+      .from('users') // your custom table name
+      .insert([
+        {
+          fullname: fullName,
+          email,
+          password, // ⚠️ don't store plain passwords in production
+        },
+      ]);
+  
     if (error) {
+      console.error("Insert error:", error);
       setError(error.message);
     } else {
+      console.log("User added:", data);
       navigate("/profile");
     }
   };
+  
 
   return (
     <div
