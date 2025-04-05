@@ -23,6 +23,11 @@ const SignUp: React.FC = () => {
           password, // ⚠️ don't store plain passwords in production
         },
       ]);
+
+    if (!email.endsWith('@bu.edu')) {
+        setError('Email must end with @bu.edu');
+        return;
+    }
   
     if (error) {
       console.error("Insert error:", error);
