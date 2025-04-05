@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "../supabaseClient";
+import { supabase } from "../../../backend/supabaseClient";
 import { UserOutlined, MailOutlined, LockOutlined } from "@ant-design/icons";
 import { Navbar } from "./Navbar";
 
@@ -54,8 +54,12 @@ const SignUp: React.FC = () => {
           padding: "2rem",
         }}
       >
-        <h2 style={{ fontSize: "2.2rem", marginBottom: "1rem" }}>Welcome Back!</h2>
-        <p style={{ fontSize: "1.1rem", marginBottom: "3rem", lineHeight: 1.6 }}>
+        <h2 style={{ fontSize: "2.2rem", marginBottom: "1rem" }}>
+          Welcome Back!
+        </h2>
+        <p
+          style={{ fontSize: "1.1rem", marginBottom: "3rem", lineHeight: 1.6 }}
+        >
           Already have an account? <br />
           Sign in to access leftover food!
         </p>
@@ -88,12 +92,24 @@ const SignUp: React.FC = () => {
         }}
       >
         <div style={{ width: "100%", maxWidth: "400px", padding: "2rem" }}>
-          <h2 style={{ textAlign: "center", fontSize: "2rem", marginBottom: "2rem" }}>
+          <h2
+            style={{
+              textAlign: "center",
+              fontSize: "2rem",
+              marginBottom: "2rem",
+            }}
+          >
             Create an Account
           </h2>
 
-          <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column" }}>
-            <label htmlFor="fullName" style={{ fontWeight: "bold", marginBottom: "0.5rem" }}>
+          <form
+            onSubmit={handleSubmit}
+            style={{ display: "flex", flexDirection: "column" }}
+          >
+            <label
+              htmlFor="fullName"
+              style={{ fontWeight: "bold", marginBottom: "0.5rem" }}
+            >
               Full Name
             </label>
             <input
@@ -111,7 +127,10 @@ const SignUp: React.FC = () => {
               }}
             />
 
-            <label htmlFor="email" style={{ fontWeight: "bold", marginBottom: "0.5rem" }}>
+            <label
+              htmlFor="email"
+              style={{ fontWeight: "bold", marginBottom: "0.5rem" }}
+            >
               BU Email
             </label>
             <input
@@ -129,7 +148,10 @@ const SignUp: React.FC = () => {
               }}
             />
 
-            <label htmlFor="password" style={{ fontWeight: "bold", marginBottom: "0.5rem" }}>
+            <label
+              htmlFor="password"
+              style={{ fontWeight: "bold", marginBottom: "0.5rem" }}
+            >
               Password
             </label>
             <input
@@ -147,7 +169,9 @@ const SignUp: React.FC = () => {
               }}
             />
 
-            {error && <p style={{ color: "red", marginBottom: "1rem" }}>{error}</p>}
+            {error && (
+              <p style={{ color: "red", marginBottom: "1rem" }}>{error}</p>
+            )}
 
             <button
               type="submit"
