@@ -22,5 +22,5 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src", "query.ts"]
+  "include": ["src", "query.ts", "../backend/vite-env.d.ts"]
 }
