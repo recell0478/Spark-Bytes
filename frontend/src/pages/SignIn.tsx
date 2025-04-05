@@ -1,7 +1,7 @@
 // Sign-In page
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "../supabaseClient";
+import { supabase } from "../../../backend/supabaseClient";
 import { MailOutlined, LockOutlined } from "@ant-design/icons";
 import { Navbar } from "./Navbar";
 import Footer from "./Footer";
@@ -50,12 +50,24 @@ const SignIn: React.FC = () => {
         }}
       >
         <div style={{ width: "100%", maxWidth: "400px", padding: "2rem" }}>
-          <h2 style={{ textAlign: "center", fontSize: "2rem", marginBottom: "2rem" }}>
+          <h2
+            style={{
+              textAlign: "center",
+              fontSize: "2rem",
+              marginBottom: "2rem",
+            }}
+          >
             Sign In to SparkBytes!
           </h2>
 
-          <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column" }}>
-            <label htmlFor="email" style={{ fontWeight: "bold", marginBottom: "0.5rem" }}>
+          <form
+            onSubmit={handleSubmit}
+            style={{ display: "flex", flexDirection: "column" }}
+          >
+            <label
+              htmlFor="email"
+              style={{ fontWeight: "bold", marginBottom: "0.5rem" }}
+            >
               BU Email
             </label>
             <input
@@ -73,7 +85,10 @@ const SignIn: React.FC = () => {
               }}
             />
 
-            <label htmlFor="password" style={{ fontWeight: "bold", marginBottom: "0.5rem" }}>
+            <label
+              htmlFor="password"
+              style={{ fontWeight: "bold", marginBottom: "0.5rem" }}
+            >
               Password
             </label>
             <input
@@ -91,7 +106,9 @@ const SignIn: React.FC = () => {
               }}
             />
 
-            {error && <p style={{ color: "red", marginBottom: "1rem" }}>{error}</p>}
+            {error && (
+              <p style={{ color: "red", marginBottom: "1rem" }}>{error}</p>
+            )}
 
             <button
               type="submit"
@@ -145,32 +162,33 @@ const SignIn: React.FC = () => {
         {/* Overlay for better readability */}
         <div
           style={{
-          position: "absolute",
-          inset: 0,
-          backgroundColor: "rgba(0, 0, 0, 0.4)",
-          zIndex: 0,
+            position: "absolute",
+            inset: 0,
+            backgroundColor: "rgba(0, 0, 0, 0.4)",
+            zIndex: 0,
           }}
         />
 
         <div style={{ position: "relative", zIndex: 1 }}>
           <h2
             style={{
-            fontSize: "2.2rem",
-            marginBottom: "1rem",
-            textShadow: "1px 1px 4px rgba(0,0,0,0.6)",
+              fontSize: "2.2rem",
+              marginBottom: "1rem",
+              textShadow: "1px 1px 4px rgba(0,0,0,0.6)",
             }}
-          >   
+          >
             Hello Friend,
           </h2>
           <p
             style={{
-            fontSize: "1.1rem",
-            marginBottom: "3rem",
-            lineHeight: 1.6,
-            textShadow: "1px 1px 4px rgba(0,0,0,0.6)",
+              fontSize: "1.1rem",
+              marginBottom: "3rem",
+              lineHeight: 1.6,
+              textShadow: "1px 1px 4px rgba(0,0,0,0.6)",
             }}
           >
-            Enter your personal details <br /> and start getting free food with us!
+            Enter your personal details <br /> and start getting free food with
+            us!
           </p>
 
           <button
