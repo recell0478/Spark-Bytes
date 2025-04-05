@@ -14,18 +14,10 @@ import Footer from "./pages/Footer";
 import Food from "./pages/Food";
 import Profile from "./pages/Profile";
 
-function LayoutWithConditionals() {
-  const location = useLocation();
-
-  const noNavbarRoutes = ["/sign-up"];
-
-  const shouldShowNavbar = !noNavbarRoutes.includes(
-    location.pathname.toLowerCase()
-  );
-
+function App() {
   return (
-    <>
-      {shouldShowNavbar && <Navbar isLoggedIn={undefined} />}
+    <Router>
+      <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
@@ -36,14 +28,6 @@ function LayoutWithConditionals() {
         <Route path="/profile" element={<Profile />} />
       </Routes>
       <Footer />
-    </>
-  );
-}
-
-function App() {
-  return (
-    <Router>
-      <LayoutWithConditionals />
     </Router>
   );
 }
