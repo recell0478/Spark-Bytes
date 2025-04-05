@@ -4,52 +4,6 @@ import { supabase } from "../supabaseClient";
 import Image from "next/image";
 import styles from "./Profile.module.css";
 
-// interface UserProfile {
-//   name: string;
-//   email: string;
-//   events: string[];
-//   allergens: string[];
-// }
-
-// const ProfilePage: React.FC = () => {
-//   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
-//   const [loading, setLoading] = useState(true);
-//   const navigate = useNavigate();
-
-//   useEffect(() => {
-//     const fetchUserProfile = async () => {
-//       const {
-//         data: { user },
-//         error: userError,
-//       } = await supabase.auth.getUser();
-
-//       if (userError || !user) {
-//         navigate("/sign-in"); // ✅ use correct route
-//         return;
-//       }
-
-//       const { data, error } = await supabase
-//         .from("profiles")
-//         .select("name, email, events, allergens")
-//         .eq("id", user.id)
-//         .single();
-
-//       if (error) {
-//         console.error("Error fetching profile:", error);
-//       } else {
-//         setUserProfile(data);
-//         console.log("Fetched profile:", data); // ✅ Debug log
-//       }
-
-//       setLoading(false);
-//     };
-
-//     fetchUserProfile();
-//   }, [navigate]);
-
-//   if (loading) return <div>Loading...</div>;
-//   if (!userProfile) return <div>No profile data found.</div>;
-
 const mockUserProfile = {
   name: "Khang Le",
   email: "hle1@bu.edu",
@@ -61,7 +15,13 @@ const ProfilePage: React.FC = () => {
   const userProfile = mockUserProfile;
 
   return (
-    <div style={{ fontFamily: "Inter, sans-serif", backgroundColor: "#fff", minHeight: "100vh" }}>
+    <div
+      style={{
+        fontFamily: "Inter, sans-serif",
+        backgroundColor: "#fff",
+        minHeight: "100vh",
+      }}
+    >
       {/* Navbar */}
       <header
         style={{
@@ -74,33 +34,58 @@ const ProfilePage: React.FC = () => {
         }}
       >
         <div style={{ display: "flex", alignItems: "center" }}>
-          <img src="/bulldog_logo.png" alt="Logo" style={{ width: 40, height: 40, marginRight: 10 }} />
-          <span style={{ fontWeight: "bold", fontSize: "1.4rem" }}>Spark!Bytes</span>
+          <img
+            src="/bulldog_logo.png"
+            alt="Logo"
+            style={{ width: 40, height: 40, marginRight: 10 }}
+          />
+          <span style={{ fontWeight: "bold", fontSize: "1.4rem" }}>
+            Spark!Bytes
+          </span>
         </div>
         <nav style={{ display: "flex", alignItems: "center", gap: "2rem" }}>
-          <a href="/" style={{ color: "#fff", textDecoration: "none" }}>Home</a>
-          <a href="/events" style={{ color: "#fff", textDecoration: "none" }}>Create Events</a>
-          <a href="/sign-up" style={{ color: "#fff", textDecoration: "none" }}>Food Sign Up</a>
-          <div style={{
-            width: 36, height: 36, backgroundColor: "#222", borderRadius: "50%"
-          }}></div>
+          <a href="/" style={{ color: "#fff", textDecoration: "none" }}>
+            Home
+          </a>
+          <a href="/events" style={{ color: "#fff", textDecoration: "none" }}>
+            Create Events
+          </a>
+          <a href="/sign-up" style={{ color: "#fff", textDecoration: "none" }}>
+            Food Sign Up
+          </a>
+          <div
+            style={{
+              width: 36,
+              height: 36,
+              backgroundColor: "#222",
+              borderRadius: "50%",
+            }}
+          ></div>
         </nav>
       </header>
 
       {/* Profile Main */}
       <main style={{ maxWidth: 750, margin: "3rem auto", padding: "1rem" }}>
         {/* Title */}
-        <h1 style={{
-          fontSize: "2rem",
-          fontWeight: 700,
-          textAlign: "center",
-          marginBottom: "1.5rem",
-        }}>
+        <h1
+          style={{
+            fontSize: "2rem",
+            fontWeight: 700,
+            textAlign: "center",
+            marginBottom: "1.5rem",
+          }}
+        >
           Personal Profile
         </h1>
 
         {/* Avatar */}
-        <div style={{ display: "flex", justifyContent: "center", marginBottom: "2rem" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginBottom: "2rem",
+          }}
+        >
           <div
             style={{
               position: "relative",
@@ -151,13 +136,19 @@ const ProfilePage: React.FC = () => {
                 borderBottom: "1px solid #aaa",
               }}
             >
-              <h4 style={{
-                fontSize: "1rem",
-                fontWeight: 600,
-                color: "#000",
-                marginBottom: "0.25rem",
-              }}>{label}</h4>
-              <p style={{ margin: 0, fontSize: "1rem", color: "#333" }}>{value}</p>
+              <h4
+                style={{
+                  fontSize: "1rem",
+                  fontWeight: 600,
+                  color: "#000",
+                  marginBottom: "0.25rem",
+                }}
+              >
+                {label}
+              </h4>
+              <p style={{ margin: 0, fontSize: "1rem", color: "#333" }}>
+                {value}
+              </p>
             </div>
           ))}
         </div>

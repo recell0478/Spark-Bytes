@@ -3,8 +3,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../../../backend/supabaseClient";
 import { MailOutlined, LockOutlined } from "@ant-design/icons";
-import { Navbar } from "./Navbar";
-import Footer from "./Footer";
+
 import SignInImage from "../assets/SignIn.jpg";
 
 const SignIn: React.FC = () => {

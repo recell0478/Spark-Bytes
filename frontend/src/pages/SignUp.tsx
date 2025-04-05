@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../../../backend/supabaseClient";
 import { UserOutlined, MailOutlined, LockOutlined } from "@ant-design/icons";
-import { Navbar } from "./Navbar";
 
 const SignUp: React.FC = () => {
   const [email, setEmail] = useState("");

@@ -4,14 +4,11 @@ import "@fontsource/abhaya-libre/800.css";
 import dog from "../assets/dog.png";
 import { Button, Divider } from "antd";
 import { useNavigate } from "react-router-dom";
-import { Navbar } from "./Navbar";
-import Footer from "./Footer";
 
 export default function Home() {
   const navigate = useNavigate();
   return (
     <div>
-      <Navbar />
       <div style={{ marginTop: "250px" }}>
         <div style={{ display: "flex", alignItems: "center" }}>
           <img
@@ -75,7 +72,6 @@ export default function Home() {
           Try Spark!Bytes
         </Button>
       </div>
-      <Footer />
     </div>
   );
 }

@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import Footer from "./Footer";
 import EventCard from "../EventCard";
-import { Navbar } from "./Navbar";
 
 function Food() {
   const [isSignedUp, setIsSignedUp] = useState(false); // Track if the user is signed up
@@ -49,7 +47,6 @@ function Food() {
           />
         </div>
       </div>
-      <Footer />
     </div>
   );
 }

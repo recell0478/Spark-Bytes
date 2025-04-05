@@ -25,7 +25,7 @@ function LayoutWithConditionals() {
 
   return (
     <>
-      {shouldShowNavbar && <Navbar/>}
+      {shouldShowNavbar && <Navbar isLoggedIn={undefined} />}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
@@ -35,6 +35,7 @@ function LayoutWithConditionals() {
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="/profile" element={<Profile />} />
       </Routes>
+      <Footer />
     </>
   );
 }

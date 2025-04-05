@@ -2,7 +2,6 @@ import { Button, Form, Input } from "antd";
 import React from "react";
 import EventCard from "../EventCard";
 import { Divider } from "antd";
-import { Navbar } from "./Navbar";
 import Footer from "./Footer";
 function Events() {
   const onFinish = (values: any) => {
@@ -10,7 +9,6 @@ function Events() {
   };
   return (
     <div>
-      <Navbar />
       <div style={{ marginTop: "250px" }}>
         <h1
           style={{
@@ -107,7 +105,6 @@ function Events() {
           </Form.Item>
         </Form>
       </div>
-      <Footer />
     </div>
   );
 }

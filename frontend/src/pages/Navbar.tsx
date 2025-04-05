@@ -33,7 +33,7 @@ export const Navbar = ({ isLoggedIn }) => {
           </li>
         ) : (
           <li>
-            <Link to="/signin">Sign In / Sign Up</Link>
+            <Link to="/sign-in">Sign In / Sign Up</Link>
           </li>
         )}
       </ul>
