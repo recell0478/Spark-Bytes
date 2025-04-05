@@ -8,7 +8,8 @@ export async function createEvent({ name, spots_remaining, description, time, al
         name,
         spots_remaining,
         description,
-        time,
+        time_start,
+        time_end,
         allergens
       }
     ])
