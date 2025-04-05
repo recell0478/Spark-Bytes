@@ -20,3 +20,4 @@ export async function createEvent({ name, spots_remaining, description, time, al
 
   return { success: true, event: data[0] }
 }
+
