@@ -9,7 +9,7 @@ function Events() {
   };
   return (
     <div>
-      <div style={{ marginTop: "250px" }}>
+      <div style={{ marginTop: "200px" }}>
         <h1
           style={{
             fontFamily: "'Abhaya Libre', serif",

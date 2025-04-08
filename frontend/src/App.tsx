@@ -27,7 +27,7 @@ function App() {
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="/profile" element={<Profile />} />
       </Routes>
-      <Footer />{" "}
+      <Footer />
     </Router>
   );
 }
