@@ -24,6 +24,14 @@ const SignUp: React.FC = () => {
         },
       ]);
 
+<<<<<<< HEAD
+=======
+    if (!email.endsWith('@bu.edu')) {
+        setError('Email must end with @bu.edu');
+        return;
+    }
+  
+>>>>>>> 1659487ba151522337db5094a46671e6b619b897
     if (error) {
       console.error("Insert error:", error);
       setError("the inputted email is already registered");
