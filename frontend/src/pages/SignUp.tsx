@@ -37,16 +37,14 @@ const SignUp: React.FC = () => {
 
   return (
     <div
-      style={{
-        display: "flex",
-        height: "85vh",
-        width: "100%",
-        fontFamily: "Inter, sans-serif",
-        overflow: "hidden",
-        gap: "4rem",
-        boxSizing: "border-box",
-        flexWrap: "nowrap",
-      }}
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          height: "calc(100vh - 150px)",
+          width: "100vw",
+          fontFamily: "Inter, sans-serif",
+          overflow: "hidden",
+        }}
     >
       {/* Left Panel */}
       <div
@@ -62,8 +60,10 @@ const SignUp: React.FC = () => {
           justifyContent: "center",
           alignItems: "center",
           textAlign: "center",
-          padding: "2rem",
-          minWidth: "400px",
+          maxWidth: "650px",
+          height: "100%",
+          margin: 0,
+          padding: 0,
         }}
       >
         <h2 style={{ fontSize: "2.2rem", marginBottom: "1rem" }}>
@@ -100,10 +100,15 @@ const SignUp: React.FC = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          minWidth: "300px",
+          maxWidth: "750px",
         }}
       >
-        <div style={{ width: "100%", maxWidth: "400px", padding: "2rem" }}>
+        <div style={{
+                marginTop: "6rem",
+                marginRight: "2rem",
+                maxWidth: "400px",
+                width: "100%",
+              }}>
           <h2
             style={{
               textAlign: "center",
