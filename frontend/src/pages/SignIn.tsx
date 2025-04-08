@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../../../backend/supabaseClient";
 import { MailOutlined, LockOutlined } from "@ant-design/icons";
-
 import SignInImage from "../assets/SignIn.jpg";
 
 const SignIn: React.FC = () => {
