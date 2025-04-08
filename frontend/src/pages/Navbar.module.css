@@ -20,17 +20,16 @@
   display: flex;
   align-items: center;
 }
-
 .menuItems {
-  display: flex;
-  align-items: center;
-  gap: 30px;
-  list-style: none;
+  display: flex;  /* Ensures the list items are displayed horizontally */
+  align-items: center;  /* Vertically centers the items */
+  gap: 30px;  /* Adds space between items */
+  list-style: none;  /* Removes the default bullet points */
   padding-right: 20px;
 }
 
 .menuItems li {
-  text-align: right;
+  text-align: left;  /* Aligns the text inside each list item */
 }
 
 .menuItems a {
