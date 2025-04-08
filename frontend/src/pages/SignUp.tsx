@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../../../backend/supabaseClient";
-import { UserOutlined, MailOutlined, LockOutlined } from "@ant-design/icons";
-
+import food from "../assets/food.jpg";
 const SignUp: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -14,27 +13,22 @@ const SignUp: React.FC = () => {
     e.preventDefault();
     setError(null);
 
-    const { data, error } = await supabase
-      .from("users") // your custom table name
-      .insert([
-        {
-          fullname: fullName,
-          email,
-          password, // ⚠️ don't store plain passwords in production
-        },
-      ]);
-
-<<<<<<< HEAD
-=======
-    if (!email.endsWith('@bu.edu')) {
-        setError('Email must end with @bu.edu');
-        return;
+    if (!email.endsWith("@bu.edu")) {
+      setError("Email must end with @bu.edu");
+      return;
     }
-  
->>>>>>> 1659487ba151522337db5094a46671e6b619b897
+
+    const { data, error } = await supabase.from("users").insert([
+      {
+        fullname: fullName,
+        email,
+        password,
+      },
+    ]);
+
     if (error) {
       console.error("Insert error:", error);
-      setError("the inputted email is already registered");
+      setError("The inputted email is already registered");
     } else {
       console.log("User added:", data);
       navigate("/profile");
@@ -45,17 +39,23 @@ const SignUp: React.FC = () => {
     <div
       style={{
         display: "flex",
-        height: "100vh",
-        width: "100vw",
+        height: "85vh",
+        width: "100%",
         fontFamily: "Inter, sans-serif",
         overflow: "hidden",
+        gap: "4rem",
+        boxSizing: "border-box",
+        flexWrap: "nowrap",
       }}
     >
-      {/* Left: Sign In prompt (red) */}
+      {/* Left Panel */}
       <div
         style={{
           flex: 1,
-          backgroundColor: "#e71f1f",
+          backgroundImage: `url(${food})`,
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
           color: "#fff",
           display: "flex",
           flexDirection: "column",
@@ -63,6 +63,7 @@ const SignUp: React.FC = () => {
           alignItems: "center",
           textAlign: "center",
           padding: "2rem",
+          minWidth: "400px",
         }}
       >
         <h2 style={{ fontSize: "2.2rem", marginBottom: "1rem" }}>
@@ -74,7 +75,6 @@ const SignUp: React.FC = () => {
           Already have an account? <br />
           Sign in to access leftover food!
         </p>
-
         <button
           onClick={() => navigate("/sign-in")}
           style={{
@@ -92,7 +92,7 @@ const SignUp: React.FC = () => {
         </button>
       </div>
 
-      {/* Right: Sign Up form (white) */}
+      {/* Right Panel */}
       <div
         style={{
           flex: 1,
@@ -100,6 +100,7 @@ const SignUp: React.FC = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          minWidth: "300px",
         }}
       >
         <div style={{ width: "100%", maxWidth: "400px", padding: "2rem" }}>

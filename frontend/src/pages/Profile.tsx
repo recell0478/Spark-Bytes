@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { supabase } from "../supabaseClient";
 import Image from "next/image";
-import styles fr
-om "./Profile.module.css";
+import styles from "./Profile.module.css";
 
 const mockUserProfile = {
   name: "Khang Le",

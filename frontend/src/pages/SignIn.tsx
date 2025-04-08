@@ -1,5 +1,4 @@
-// Sign-In page
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../../../backend/supabaseClient";
 import { MailOutlined, LockOutlined } from "@ant-design/icons";
@@ -10,6 +9,8 @@ const SignIn: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -28,20 +29,32 @@ const SignIn: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <div
       style={{
         display: "flex",
-        height: "100vh",
-        width: "100vw",
+        height: "85vh",
+        width: "100%",
         fontFamily: "Inter, sans-serif",
         overflow: "hidden",
+        gap: "4rem",
+        boxSizing: "border-box",
+        flexWrap: "nowrap",
       }}
     >
       {/* Left Side: Sign In */}
       <div
         style={{
           flex: 1,
+          minWidth: 0,
           backgroundColor: "#fff",
           display: "flex",
           justifyContent: "center",
@@ -145,17 +158,18 @@ const SignIn: React.FC = () => {
         style={{
           flex: 1,
           backgroundImage: `url(${SignInImage})`,
+          backgroundRepeat: "no-repeat",
+          filter: "brightness(1.2)",
           backgroundSize: "cover",
           backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          position: "relative",
+          color: "#fff",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
           textAlign: "center",
           padding: "2rem",
-          color: "#fff",
+          minWidth: "400px",
         }}
       >
         {/* Overlay for better readability */}
