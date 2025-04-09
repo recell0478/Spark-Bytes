@@ -39,28 +39,33 @@ const SignIn: React.FC = () => {
   return (
     <div
       style={{
-        display: "flex",
-        height: "85vh",
-        width: "100%",
-        fontFamily: "Inter, sans-serif",
-        overflow: "hidden",
-        gap: "4rem",
-        boxSizing: "border-box",
-        flexWrap: "nowrap",
+      display: "flex",
+      flexDirection: "row",
+      height: "calc(100vh - 150px)",
+      width: "100vw",
+      fontFamily: "Inter, sans-serif",
+      overflow: "hidden",
       }}
     >
       {/* Left Side: Sign In */}
       <div
         style={{
           flex: 1,
-          minWidth: 0,
           backgroundColor: "#fff",
           display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
+          justifyContent: "flex-start",
+          alignItems: "flex-start",
+          height: "100%",
+          maxWidth: "650px",
+          padding: "3rem 4rem",
         }}
       >
-        <div style={{ width: "100%", maxWidth: "400px", padding: "2rem" }}>
+        <div style={{
+                marginTop: "4rem",
+                marginLeft: "2rem",
+                maxWidth: "400px",
+                width: "100%",
+              }}>
           <h2
             style={{
               textAlign: "center",
@@ -167,8 +172,7 @@ const SignIn: React.FC = () => {
           justifyContent: "center",
           alignItems: "center",
           textAlign: "center",
-          padding: "2rem",
-          minWidth: "400px",
+          maxWidth: "750px",
         }}
       >
         {/* Overlay for better readability */}
