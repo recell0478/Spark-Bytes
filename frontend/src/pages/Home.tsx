@@ -9,7 +9,7 @@ export default function Home() {
   const navigate = useNavigate();
   return (
     <div>
-      <div style={{ marginTop: "250px" }}>
+      <div style={{ marginTop: "150px" }}>
         <div style={{ display: "flex", alignItems: "center" }}>
           <img
             src={dog}

@@ -3,6 +3,9 @@ import { useRouter } from "next/router";
 import { supabase } from "../supabaseClient";
 import Image from "next/image";
 import styles from "./Profile.module.css";
+import { Button, Divider } from "antd";
+import Myevents from "./profilecards/Myevents";
+import RegisteredEvents from "./profilecards/RegisteredEvents";
 
 const mockUserProfile = {
   name: "Khang Le",
@@ -72,6 +75,7 @@ const ProfilePage: React.FC = () => {
             fontWeight: 700,
             textAlign: "center",
             marginBottom: "1.5rem",
+            fontFamily: "'Abhaya Libre', serif",
           }}
         >
           Personal Profile
@@ -151,7 +155,50 @@ const ProfilePage: React.FC = () => {
             </div>
           ))}
         </div>
+        <Button
+          type="primary"
+          htmlType="submit"
+          size="large"
+          style={{ backgroundColor: "#E71F1F", borderColor: "#E71F1F" }}
+        >
+          Delete Account
+        </Button>
       </main>
+      <div>
+        <h1
+          style={{
+            fontFamily: "'Abhaya Libre', serif",
+            fontWeight: 800,
+            fontSize: "50px",
+            marginBottom: "8px",
+            textAlign: "left",
+          }}
+        >
+          My Events
+        </h1>
+        <Divider
+          style={{ height: "0.3px", backgroundColor: "#000", marginTop: "0" }}
+        />
+        <Myevents />
+      </div>
+
+      <div>
+        <h1
+          style={{
+            fontFamily: "'Abhaya Libre', serif",
+            fontWeight: 800,
+            fontSize: "50px",
+            marginBottom: "8px",
+            textAlign: "left",
+          }}
+        >
+          Registered Events
+        </h1>
+        <Divider
+          style={{ height: "0.3px", backgroundColor: "#000", marginTop: "0" }}
+        />
+        <RegisteredEvents />
+      </div>
     </div>
   );
 };
