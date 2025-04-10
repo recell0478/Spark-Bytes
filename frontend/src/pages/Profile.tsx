@@ -155,14 +155,24 @@ const ProfilePage: React.FC = () => {
             </div>
           ))}
         </div>
-        <Button
-          type="primary"
-          htmlType="submit"
-          size="large"
-          style={{ backgroundColor: "#E71F1F", borderColor: "#E71F1F" }}
-        >
-          Delete Account
-        </Button>
+        <div style={{ display: "flex", gap: "20px", justifyContent: "center" }}>
+          <Button
+            type="primary"
+            htmlType="submit"
+            size="large"
+            style={{ backgroundColor: "#E71F1F", borderColor: "#E71F1F" }}
+          >
+            Delete Account
+          </Button>
+          <Button
+            type="primary"
+            htmlType="submit"
+            size="large"
+            style={{ backgroundColor: "#000", borderColor: "#000" }}
+          >
+            Log Out
+          </Button>
+        </div>
       </main>
       <div>
         <h1

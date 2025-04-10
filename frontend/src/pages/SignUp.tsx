@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "../../../backend/supabaseClient";
+import { supabase } from "../utils/supabaseClient";
 import food from "../assets/food.jpg";
 const SignUp: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -37,14 +37,14 @@ const SignUp: React.FC = () => {
 
   return (
     <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          height: "calc(100vh - 150px)",
-          width: "100vw",
-          fontFamily: "Inter, sans-serif",
-          overflow: "hidden",
-        }}
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        height: "calc(100vh - 150px)",
+        width: "100vw",
+        fontFamily: "Inter, sans-serif",
+        overflow: "hidden",
+      }}
     >
       {/* Left Panel */}
       <div
@@ -103,12 +103,14 @@ const SignUp: React.FC = () => {
           maxWidth: "750px",
         }}
       >
-        <div style={{
-                marginTop: "6rem",
-                marginRight: "2rem",
-                maxWidth: "400px",
-                width: "100%",
-              }}>
+        <div
+          style={{
+            marginTop: "6rem",
+            marginRight: "2rem",
+            maxWidth: "400px",
+            width: "100%",
+          }}
+        >
           <h2
             style={{
               textAlign: "center",

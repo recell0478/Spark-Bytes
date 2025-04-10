@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "../../../backend/supabaseClient";
+import { supabase } from "../utils/supabaseClient";
 import { MailOutlined, LockOutlined } from "@ant-design/icons";
 import SignInImage from "../assets/SignIn.jpg";
 
@@ -39,12 +39,12 @@ const SignIn: React.FC = () => {
   return (
     <div
       style={{
-      display: "flex",
-      flexDirection: "row",
-      height: "calc(100vh - 150px)",
-      width: "100vw",
-      fontFamily: "Inter, sans-serif",
-      overflow: "hidden",
+        display: "flex",
+        flexDirection: "row",
+        height: "calc(100vh - 150px)",
+        width: "100vw",
+        fontFamily: "Inter, sans-serif",
+        overflow: "hidden",
       }}
     >
       {/* Left Side: Sign In */}
@@ -54,18 +54,20 @@ const SignIn: React.FC = () => {
           backgroundColor: "#fff",
           display: "flex",
           justifyContent: "flex-start",
-          alignItems: "flex-start",
+          alignItems: "center",
           height: "100%",
           maxWidth: "650px",
           padding: "3rem 4rem",
         }}
       >
-        <div style={{
-                marginTop: "4rem",
-                marginLeft: "2rem",
-                maxWidth: "400px",
-                width: "100%",
-              }}>
+        <div
+          style={{
+            marginTop: "4rem",
+            marginLeft: "2rem",
+            maxWidth: "400px",
+            width: "100%",
+          }}
+        >
           <h2
             style={{
               textAlign: "center",
