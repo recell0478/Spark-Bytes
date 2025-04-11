@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../utils/supabaseClient";
 import food from "../assets/food.jpg";
+import useRedirectIfAuthenticated from "../hooks/useRedirectedIfAuthenticated";
 const SignUp: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+  useRedirectIfAuthenticated("/profile");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

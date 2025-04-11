@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { supabase } from "../supabaseClient";
+import { supabase } from "../utils/supabaseClient";
 import Image from "next/image";
 import styles from "./Profile.module.css";
 import { Button, Divider } from "antd";
 import Myevents from "./profilecards/Myevents";
 import RegisteredEvents from "./profilecards/RegisteredEvents";
+import { useNavigate } from "react-router";
+import useProtectRoute from "../hooks/useProtectRoute";
 
 const mockUserProfile = {
   name: "Khang Le",
@@ -15,8 +17,14 @@ const mockUserProfile = {
 };
 
 const ProfilePage: React.FC = () => {
+  const checkingAuth = useProtectRoute("/sign-in");
   const userProfile = mockUserProfile;
-
+  const navigate = useNavigate();
+  const onSignOut = () => {
+    supabase.auth.signOut();
+    supabase.auth.getUser();
+    navigate("/sign-in");
+  };
   return (
     <div
       style={{
@@ -169,6 +177,7 @@ const ProfilePage: React.FC = () => {
             htmlType="submit"
             size="large"
             style={{ backgroundColor: "#000", borderColor: "#000" }}
+            onClick={onSignOut}
           >
             Log Out
           </Button>

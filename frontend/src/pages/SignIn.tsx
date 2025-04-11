@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "../utils/supabaseClient";
 import { MailOutlined, LockOutlined } from "@ant-design/icons";
 import SignInImage from "../assets/SignIn.jpg";
+import useRedirectIfAuthenticated from "../hooks/useRedirectedIfAuthenticated";
 
 const SignIn: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -11,6 +12,7 @@ const SignIn: React.FC = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   const navigate = useNavigate();
+  useRedirectIfAuthenticated("/profile");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
