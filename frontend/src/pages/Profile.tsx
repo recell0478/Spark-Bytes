@@ -168,14 +168,6 @@ const ProfilePage: React.FC = () => {
             type="primary"
             htmlType="submit"
             size="large"
-            style={{ backgroundColor: "#E71F1F", borderColor: "#E71F1F" }}
-          >
-            Delete Account
-          </Button>
-          <Button
-            type="primary"
-            htmlType="submit"
-            size="large"
             style={{ backgroundColor: "#000", borderColor: "#000" }}
             onClick={onSignOut}
           >
