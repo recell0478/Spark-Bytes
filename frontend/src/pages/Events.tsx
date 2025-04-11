@@ -3,10 +3,21 @@ import React from "react";
 import EventCard from "../EventCard";
 import { Divider } from "antd";
 import Footer from "./Footer";
+import { Checkbox } from "antd";
+
 function Events() {
   const onFinish = (values: any) => {
     console.log("Form values: ", values);
   };
+  const allergyOptions = [
+    "Dairy-free",
+    "Gluten-free",
+    "Kosher",
+    "Halal",
+    "Vegetarian",
+    "Vegan",
+    "Nut-free",
+  ];
   return (
     <div>
       <div style={{ marginTop: "200px" }}>
@@ -73,10 +84,10 @@ function Events() {
             label="Allergy"
             name="allergy"
             rules={[
-              { required: false, message: "Please input any allergies!" },
+              { required: false, message: "Please select any allergies!" },
             ]}
           >
-            <Input size="large" placeholder="Allergy" />
+            <Checkbox.Group options={allergyOptions} />
           </Form.Item>
 
           <Form.Item

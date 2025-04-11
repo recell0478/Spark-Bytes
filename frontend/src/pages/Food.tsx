@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import EventCard from "../EventCard";
+import { Checkbox } from "antd";
 
 function Food() {
   const [isSignedUp, setIsSignedUp] = useState(false); // Track if the user is signed up
@@ -7,6 +8,16 @@ function Food() {
   const handleSignUpClick = () => {
     setIsSignedUp(!isSignedUp); // Toggle sign-up state
   };
+
+  const allergyOptions = [
+    "Dairy-free",
+    "Gluten-free",
+    "Kosher",
+    "Halal",
+    "Vegetarian",
+    "Vegan",
+    "Nut-free",
+  ];
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -22,6 +33,22 @@ function Food() {
         >
           Sign Up for Free Food!
         </h1>
+        <div style={{ marginBottom: "30px" }}>
+          <Checkbox.Group>
+            <div style={{ display: "flex", flexDirection: "row", gap: "10px" }}>
+              {allergyOptions.map((option) => (
+                <Checkbox
+                  key={option}
+                  value={option}
+                  style={{ fontSize: "20px" }}
+                >
+                  {option}
+                </Checkbox>
+              ))}
+            </div>
+          </Checkbox.Group>
+        </div>
+
         <div
           style={{
             marginBottom: "40px",
