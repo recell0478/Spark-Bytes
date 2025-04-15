@@ -8,6 +8,7 @@ import Myevents from "./profilecards/Myevents";
 import RegisteredEvents from "./profilecards/RegisteredEvents";
 import { useNavigate } from "react-router";
 import useProtectRoute from "../hooks/useProtectRoute";
+import { Navbar } from "./Navbar.tsx";
 
 const mockUserProfile = {
   name: "Khang Le",
@@ -33,46 +34,10 @@ const ProfilePage: React.FC = () => {
         minHeight: "100vh",
       }}
     >
-      <header
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          backgroundColor: "#e71f1f",
-          color: "#fff",
-          padding: "1rem 2rem",
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <img
-            src="/bulldog_logo.png"
-            alt="Logo"
-            style={{ width: 40, height: 40, marginRight: 10 }}
-          />
-          <span style={{ fontWeight: "bold", fontSize: "1.4rem" }}>
-            Spark!Bytes
-          </span>
-        </div>
-        <nav style={{ display: "flex", alignItems: "center", gap: "2rem" }}>
-          <a href="/" style={{ color: "#fff", textDecoration: "none" }}>
-            Home
-          </a>
-          <a href="/events" style={{ color: "#fff", textDecoration: "none" }}>
-            Create Events
-          </a>
-          <a href="/sign-up" style={{ color: "#fff", textDecoration: "none" }}>
-            Food Sign Up
-          </a>
-          <div
-            style={{
-              width: 36,
-              height: 36,
-              backgroundColor: "#222",
-              borderRadius: "50%",
-            }}
-          ></div>
-        </nav>
-      </header>
+
+      <div style={{ fontFamily: "Inter, sans-serif"}}>
+        <Navbar /> 
+      </div>
 
       {/* Profile Main */}
       <main style={{ maxWidth: 750, margin: "3rem auto", padding: "1rem" }}>
