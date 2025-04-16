@@ -16,6 +16,7 @@ interface UserProfile {
   email: string;
   fullname: string;
   created_at: string;
+  allergens: string;
 }
 
 
@@ -44,7 +45,7 @@ const ProfilePage: React.FC = () => {
         console.log("Fetching profile for ID:", user.id);
         const { data, error } = await supabase
           .from("users")
-          .select("id, email, fullname, created_at")
+          .select("id, email, fullname, created_at, allergens")
           .eq("email", user.email)
           .single();
   
@@ -97,6 +98,7 @@ const ProfilePage: React.FC = () => {
             fontSize: "2rem",
             fontWeight: 700,
             textAlign: "center",
+            marginTop: "4rem",
             marginBottom: "1.5rem",
             fontFamily: "'Abhaya Libre', serif",
           }}
@@ -152,7 +154,7 @@ const ProfilePage: React.FC = () => {
             { label: "Name", value: userProfile.fullname },
             { label: "BU Email", value: userProfile.email },
             //{ label: "Signed Up Events", value: userProfile.events.join(", ") },
-            //{ label: "Allergens", value: userProfile.allergens.join(", ") },
+            { label: "Allergens", value: userProfile.allergens },
           ].map(({ label, value }) => (
             <div
               key={label}
