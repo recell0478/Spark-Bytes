@@ -45,7 +45,7 @@ const ProfilePage: React.FC = () => {
         const { data, error } = await supabase
           .from("users")
           .select("id, email, fullname, created_at")
-          .eq("id", user.id)
+          .eq("email", user.email)
           .single();
   
         console.log("Profile data response:", { data, error });
