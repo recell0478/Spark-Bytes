@@ -10,22 +10,68 @@ import { useNavigate } from "react-router";
 import useProtectRoute from "../hooks/useProtectRoute";
 import { Navbar } from "./Navbar.tsx";
 
-const mockUserProfile = {
-  name: "Khang Le",
-  email: "hle1@bu.edu",
-  events: ["Questrom Conference", "CCD Workshop"],
-  allergens: ["milk", "eggs", "peanuts", "shellfish"],
-};
+
+interface UserProfile {
+  id: string;
+  email: string;
+  fullname: string;
+  created_at: string;
+}
+
 
 const ProfilePage: React.FC = () => {
   const checkingAuth = useProtectRoute("/sign-in");
-  const userProfile = mockUserProfile;
   const navigate = useNavigate();
-  const onSignOut = () => {
-    supabase.auth.signOut();
-    supabase.auth.getUser();
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+  const [loading, setLoading] = useState(true);
+  
+
+  useEffect(() => {
+    
+    
+    const fetchProfile = async () => {
+      try {
+        // Get authenticated user
+        const { data: { user } } = await supabase.auth.getUser();
+        
+        if (!user) {
+          navigate("/sign-in");
+          return;
+        }
+
+        // Fetch profile from public.users table
+        const { data, error } = await supabase
+          .from("users")
+          .select("id, email, fullname, created_at")
+          .eq("id", user.id)
+          .single();
+
+        if (error) throw error;
+        
+        setUserProfile(data);
+      } catch (error) {
+        console.error("Error fetching profile:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProfile();
+  }, [navigate]);
+
+  const onSignOut = async () => {
+    await supabase.auth.signOut();
     navigate("/sign-in");
   };
+
+  if (loading) {
+    return <div>Loading profile...</div>;
+  }
+
+  if (!userProfile) {
+    return <div>Error loading profile</div>;
+  }
+
   return (
     <div
       style={{
@@ -99,10 +145,10 @@ const ProfilePage: React.FC = () => {
         {/* Profile Fields */}
         <div style={{ padding: "0 1rem" }}>
           {[
-            { label: "Name", value: userProfile.name },
+            { label: "Name", value: userProfile.fullname },
             { label: "BU Email", value: userProfile.email },
-            { label: "Signed Up Events", value: userProfile.events.join(", ") },
-            { label: "Allergens", value: userProfile.allergens.join(", ") },
+            //{ label: "Signed Up Events", value: userProfile.events.join(", ") },
+            //{ label: "Allergens", value: userProfile.allergens.join(", ") },
           ].map(({ label, value }) => (
             <div
               key={label}
