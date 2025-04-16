@@ -1,29 +1,49 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Navbar } from "./Navbar.tsx";
+import { Navbar } from "./Navbar";
 import useProtectRoute from "../hooks/useProtectRoute";
-import { supabase } from "../utils/supabaseClient.ts";
+import { supabase } from "../utils/supabaseClient";
 
 const EditProfile: React.FC = () => {
     const navigate = useNavigate();
-
     const checkingAuth = useProtectRoute();
-    if (checkingAuth) 
-        return null;
+    const [loading, setLoading] = useState(true);
 
-    const [name, setName] = useState("Khang Le");
-
-    const [allergens, setAllergens] = useState(
-        "milk, eggs, peanuts, tree nuts, soy, wheat, fish, and shellfish"
-    );
-
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [allergens, setAllergens] = useState("");
     const [uploadedUrl, setUploadedUrl] = useState<string | null>(null);
 
+    useEffect(() => {
+        const fetchProfile = async () => {
+            const { data: { user } } = await supabase.auth.getUser();
+            
+            if (!user) {
+                navigate("/sign-in");
+                return;
+            }
+
+            const { data, error } = await supabase
+                .from("users")
+                .select("fullname, email, allergens, profile_image")
+                .eq("email", user.email)
+                .single();
+
+            if (!error && data) {
+                setName(data.fullname || "");
+                setEmail(data.email || "");
+                setAllergens(data.allergens || "");
+                setUploadedUrl(data.profile_image || null);
+            }
+            
+            setLoading(false);
+        };
+
+        fetchProfile();
+    }, [navigate]);
+
     const handleSave = async () => {
-        const {
-            data: { user },
-            error: userError,
-        } = await supabase.auth.getUser();
+        const { data: { user }, error: userError } = await supabase.auth.getUser();
         
         if (userError || !user) {
             alert("Not logged in.");
@@ -31,22 +51,22 @@ const EditProfile: React.FC = () => {
         }
 
         const { error } = await supabase
-            .from("profiles")
+            .from("users")
             .update({
-                name,
+                fullname: name,
                 allergens,
-                avatar_url: uploadedUrl,
+                profile_image: uploadedUrl
             })
-            .eq("id", user.id);
+            .eq("email", user.email);
 
-            if (error) {
-                alert("Failed to update profile.");
-            } else {
-                alert("Changes saved!");
-                navigate("/profile");
-            }
+        if (error) {
+            alert("Failed to update profile: " + error.message);
+        } else {
+            navigate("/profile");
+        }
     };
 
+    // Fix storage bucket name
     const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
@@ -59,15 +79,18 @@ const EditProfile: React.FC = () => {
 
         if (error) {
             console.error("Upload error:", error);
-            alert("Failed to upload image.");
             return;
         }
 
-        const { data } = supabase.storage  
-            .from("avatars:")
+        const { data } = supabase.storage
+            .from("avatars") // Fixed colon typo
             .getPublicUrl(fileName);
 
         setUploadedUrl(data.publicUrl);
+    }
+
+    if (loading) {
+        return <div>Loading profile...</div>;
     }
 
     return (
@@ -160,7 +183,7 @@ const EditProfile: React.FC = () => {
                     <span
                         style={{ marginLeft: "1rem" }}
                     >
-                        hle1@bu.edu
+                        {email || "Loading..."}
                     </span>
                 </div>
 
