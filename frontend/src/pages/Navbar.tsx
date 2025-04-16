@@ -3,14 +3,20 @@ import { Link } from "react-router-dom";
 import profile from "../assets/profile.png";
 import dog from "../assets/dog.png";
 
-export const Navbar = ({ isLoggedIn }) => {
+interface NavBarProps {
+  isLoggedIn?: boolean;
+}
+
+export const Navbar: React.FC<NavBarProps> = ({ isLoggedIn = false }) => {
   return (
     <nav className={styles.navbar}>
+      {/* Logo and Title */}
       <div className={styles.spark}>
         <img src={dog} alt="Dog" className={styles.dog} />
         <h1 className={styles.title}>Spark!Bytes</h1>
       </div>
 
+      {/* Navigation Links */}
       <ul className={styles.menuItems}>
         <li>
           <Link to="/home">Home</Link>
@@ -21,6 +27,8 @@ export const Navbar = ({ isLoggedIn }) => {
         <li>
           <Link to="/food">Food Sign Up</Link>
         </li>
+        
+        {/* Conditional Profile Icon or Auth Link */}
         {isLoggedIn ? (
           <li>
             <Link to="/profile">
