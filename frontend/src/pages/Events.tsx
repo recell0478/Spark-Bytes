@@ -4,11 +4,41 @@ import EventCard from "../EventCard";
 import { Divider } from "antd";
 import Footer from "./Footer";
 import { Checkbox } from "antd";
+import { supabase } from "../utils/supabaseClient";
+import { useNavigate } from "react-router-dom";
 
 function Events() {
-  const onFinish = (values: any) => {
+  const navigate = useNavigate();
+  const onFinish = async (values: any) => {
     console.log("Form values: ", values);
-  };
+
+    try {
+      const {data, error} = await supabase.from("Events").insert([
+        {
+        
+        name: values.eventName,
+        location: values.location,
+        spots_remaining: values.quantity,
+        description: values.foodDescription,
+        time_start: values.startTime,
+        time_end: values.endTime,
+        allergens: values.allergy,
+        },
+      ]);
+
+      if (error){
+        console.error("Error, could not create event: ", error);
+      } else {
+        console.log("Event created: ", data);
+        navigate('/home')
+        
+      }
+    } catch (err) {
+        console.error("Unexpected error: ", err)
+      }
+    };
+
+  
   const allergyOptions = [
     "Dairy-free",
     "Gluten-free",
