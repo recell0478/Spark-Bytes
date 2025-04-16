@@ -103,6 +103,7 @@ const EditProfile: React.FC = () => {
 
                 {/* Avatar */}
                 <div style={{ display: "flex", justifyContent: "center", marginBottom: "2rem"}}>
+                    
                     <div
                         style={{
                             position: "relative",
@@ -115,6 +116,8 @@ const EditProfile: React.FC = () => {
                             justifyContent: "center",
                             alignItems: "center",
                             border: "1px solid #aaa",
+                            
+
                         }}
                     >
                         👤
@@ -128,45 +131,25 @@ const EditProfile: React.FC = () => {
                                 borderRadius: "50%",
                                 border: "1px solid #ccc",
                                 padding: "0.25rem",
+                                
+                                
                             }}
-                        >
+                        >   
                             ✏️
                         </span>
                         <input
                             type="file"
                             accept="image/*"
                             onChange={handleImageUpload}
-                            style={{ marginTop: "1rem"}}
+                            style={{ marginTop: "10em", 
+                                padding: "5rem",
+
+                            }}
+                            
                         />
                     </div>
-                </div>
 
-                {/* Name */}
-                <div
-                    style={{ marginBottom: "1.5rem"}} 
-                >
-                    <label
-                        style={{
-                            fontWeight: 600,
-                            display: "block",
-                            marginBottom: "0.25rem"
-                        }}
-                    >
-                        Name:
-                    </label>
-                    <input
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        style={{
-                            padding: "0.75rem",
-                            width: "100%",
-                            backgroundColor: "#eee",
-                            border: "1px solid #ccc",
-                            fontSize: "1rem",
-                        }}
-                    />
                 </div>
-
                 {/* Email (Read-only) */}
                 <div
                     style={{ 
@@ -186,6 +169,34 @@ const EditProfile: React.FC = () => {
                         {email || "Loading..."}
                     </span>
                 </div>
+
+                {/* Name */}
+                <div
+                    style={{ marginBottom: "1.5rem"}} 
+                >
+                    <label
+                        style={{
+                            fontWeight: 600,
+                            display: "block",
+                            marginBottom: "0.25rem"
+                        }}
+                    >
+                        Edit Name:
+                    </label>
+                    <input
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        style={{
+                            padding: "0.75rem",
+                            width: "100%",
+                            backgroundColor: "#eee",
+                            border: "1px solid #ccc",
+                            fontSize: "1rem",
+                        }}
+                    />
+                </div>
+
+                
 
                 {/* Registered Events (Read-only) */}
                 <div
@@ -222,7 +233,7 @@ const EditProfile: React.FC = () => {
                             marginBottom:"0.25rem"
                         }}
                     >
-                        Allergens:
+                        Edit Allergens:
                     </label>
                     <input
                         value={allergens}
