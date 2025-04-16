@@ -15,10 +15,7 @@ const SignUp: React.FC = () => {
     e.preventDefault();
     setError(null);
 
-    if (!email.endsWith("@bu.edu")) {
-      setError("Email must end with @bu.edu");
-      return;
-    }
+    
 
     const { data, error } = await supabase.from("users").insert([
       {
@@ -27,6 +24,11 @@ const SignUp: React.FC = () => {
         password,
       },
     ]);
+
+    if (!email.endsWith("@bu.edu")) {
+      setError("Email must end with @bu.edu");
+      return;
+    }
 
     if (error) {
       console.error("Insert error:", error);
