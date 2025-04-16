@@ -20,8 +20,6 @@ interface UserProfile {
 }
 
 
-
-
 const ProfilePage: React.FC = () => {
   const checkingAuth = useProtectRoute("/sign-in");
   const navigate = useNavigate();
@@ -180,7 +178,16 @@ const ProfilePage: React.FC = () => {
             </div>
           ))}
         </div>
+        
         <div style={{ display: "flex", gap: "20px", justifyContent: "center" }}>
+          <Button
+            type="primary"
+            size="large"
+            style={{ backgroundColor: "#000", borderColor: "#000" }}
+            onClick={() => navigate("/edit-profile")}
+          >
+            Edit Profile
+          </Button>
           <Button
             type="primary"
             htmlType="submit"

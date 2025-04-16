@@ -10,6 +10,7 @@ import Food from "./pages/Food";
 import Profile from "./pages/Profile";
 import { useEffect, useState } from "react";
 import { supabase } from "./utils/supabaseClient";
+import EditProfile from "./pages/EditProfile";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -38,6 +39,8 @@ function App() {
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/edit-profile" element={<EditProfile />} />
+
       </Routes>
       <Footer />
     </Router>
