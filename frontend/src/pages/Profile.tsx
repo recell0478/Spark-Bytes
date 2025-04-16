@@ -19,6 +19,8 @@ interface UserProfile {
 }
 
 
+
+
 const ProfilePage: React.FC = () => {
   const checkingAuth = useProtectRoute("/sign-in");
   const navigate = useNavigate();
@@ -27,35 +29,37 @@ const ProfilePage: React.FC = () => {
   
 
   useEffect(() => {
-    
-    
     const fetchProfile = async () => {
       try {
-        // Get authenticated user
+        console.log("Starting profile fetch...");
         const { data: { user } } = await supabase.auth.getUser();
-        
+        console.log("Auth user:", user);
+  
         if (!user) {
+          console.log("No authenticated user");
           navigate("/sign-in");
           return;
         }
-
-        // Fetch profile from public.users table
+  
+        console.log("Fetching profile for ID:", user.id);
         const { data, error } = await supabase
           .from("users")
           .select("id, email, fullname, created_at")
           .eq("id", user.id)
           .single();
-
+  
+        console.log("Profile data response:", { data, error });
         if (error) throw error;
-        
+  
         setUserProfile(data);
       } catch (error) {
-        console.error("Error fetching profile:", error);
+        console.error("Error:", error);
+        setUserProfile(null);
       } finally {
         setLoading(false);
       }
     };
-
+  
     fetchProfile();
   }, [navigate]);
 
