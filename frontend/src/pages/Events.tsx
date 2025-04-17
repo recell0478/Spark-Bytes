@@ -1,16 +1,33 @@
 import { Button, Form, Input } from "antd";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import EventCard from "../EventCard";
 import { Divider } from "antd";
 import Footer from "./Footer";
 import { Checkbox } from "antd";
 import { supabase } from "../utils/supabaseClient";
 import { useNavigate } from "react-router-dom";
+import useRedirectIfAuthenticated from "../hooks/useRedirectedIfAuthenticated";
 
 function Events() {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const checkUser = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (!session) {
+        navigate("/sign-in"); // or wherever you want to send unauthenticated users
+      } else {
+        setLoading(false); // only allow rendering after auth is confirmed
+      }
+    };
+    checkUser();
+  }, [navigate]);
   const onFinish = async (values: any) => {
     console.log("Form values: ", values);
+    const navigate = useNavigate();
+    useRedirectIfAuthenticated("/profile");
 
     try {
       const { data, error } = await supabase.from("Events").insert([

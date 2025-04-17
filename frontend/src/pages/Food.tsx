@@ -1,8 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import EventCard from "../EventCard";
 import { Checkbox } from "antd";
+import { useNavigate } from "react-router";
+import { supabase } from "../utils/supabaseClient";
 
 function Food() {
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const checkUser = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (!session) {
+        navigate("/sign-in"); // or wherever you want to send unauthenticated users
+      } else {
+        setLoading(false); // only allow rendering after auth is confirmed
+      }
+    };
+    checkUser();
+  }, [navigate]);
   const [isSignedUp, setIsSignedUp] = useState(false); // Track if the user is signed up
 
   const handleSignUpClick = () => {
