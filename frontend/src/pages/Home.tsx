@@ -5,7 +5,7 @@ import dog from "../assets/dog.png";
 import { Button, Divider } from "antd";
 import { useNavigate } from "react-router-dom";
 
-export default function Home() {
+export default function Home({ isLoggedIn = false }) {
   const navigate = useNavigate();
   return (
     <div>
@@ -67,7 +67,7 @@ export default function Home() {
             minWidth: "180px", // Ensures the button is wide enough
             marginBottom: "40px",
           }}
-          onClick={() => navigate("/food")}
+          onClick={() => navigate(isLoggedIn ? "/events" : "/sign-in")}
         >
           Try Spark!Bytes
         </Button>

@@ -10,7 +10,6 @@ import { useNavigate } from "react-router";
 import useProtectRoute from "../hooks/useProtectRoute";
 import { Navbar } from "./Navbar.tsx";
 
-
 interface UserProfile {
   id: string;
   email: string;
@@ -19,37 +18,37 @@ interface UserProfile {
   allergens: string;
 }
 
-
 const ProfilePage: React.FC = () => {
   const checkingAuth = useProtectRoute("/sign-in");
   const navigate = useNavigate();
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
-  
 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         console.log("Starting profile fetch...");
-        const { data: { user } } = await supabase.auth.getUser();
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
         console.log("Auth user:", user);
-  
+
         if (!user) {
           console.log("No authenticated user");
           navigate("/sign-in");
           return;
         }
-  
+
         console.log("Fetching profile for ID:", user.id);
         const { data, error } = await supabase
           .from("users")
           .select("id, email, fullname, created_at, allergens")
           .eq("email", user.email)
           .single();
-  
+
         console.log("Profile data response:", { data, error });
         if (error) throw error;
-  
+
         setUserProfile(data);
       } catch (error) {
         console.error("Error:", error);
@@ -58,7 +57,7 @@ const ProfilePage: React.FC = () => {
         setLoading(false);
       }
     };
-  
+
     fetchProfile();
   }, [navigate]);
 
@@ -83,9 +82,8 @@ const ProfilePage: React.FC = () => {
         minHeight: "100vh",
       }}
     >
-
-      <div style={{ fontFamily: "Inter, sans-serif"}}>
-        <Navbar /> 
+      <div style={{ fontFamily: "Inter, sans-serif" }}>
+        <Navbar />
       </div>
 
       {/* Profile Main */}
@@ -140,9 +138,7 @@ const ProfilePage: React.FC = () => {
                 cursor: "pointer",
               }}
               title="Edit"
-            >
-              ✏️
-            </span>
+            ></span>
           </div>
         </div>
 
@@ -178,7 +174,7 @@ const ProfilePage: React.FC = () => {
             </div>
           ))}
         </div>
-        
+
         <div style={{ display: "flex", gap: "20px", justifyContent: "center" }}>
           <Button
             type="primary"

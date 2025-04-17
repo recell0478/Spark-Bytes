@@ -33,14 +33,13 @@ function App() {
       <Navbar isLoggedIn={isLoggedIn} />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/home" element={<Home />} />
+        <Route path="/home" element={<Home isLoggedIn={isLoggedIn} />} />
         <Route path="/events" element={<Events />} />
         <Route path="/food" element={<Food />} />
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/edit-profile" element={<EditProfile />} />
-
       </Routes>
       <Footer />
     </Router>

@@ -13,32 +13,31 @@ function Events() {
     console.log("Form values: ", values);
 
     try {
-      const {data, error} = await supabase.from("Events").insert([
+      const { data, error } = await supabase.from("Events").insert([
         {
-        
-        name: values.eventName,
-        location: values.location,
-        spots_remaining: values.quantity,
-        description: values.foodDescription,
-        time_start: values.startTime,
-        time_end: values.endTime,
-        allergens: values.allergy,
+          name: values.eventName,
+          location: values.location,
+          spots_remaining: values.quantity,
+          description: values.foodDescription,
+          time_start: values.startTime,
+          time_end: values.endTime,
+          allergens: values.allergy,
         },
       ]);
 
-      if (error){
+      if (error) {
         console.error("Error, could not create event: ", error);
       } else {
         console.log("Event created: ", data);
-        navigate('/home')
-        
+        window.location.reload();
+
+        // delete all the input after the events are created
       }
     } catch (err) {
-        console.error("Unexpected error: ", err)
-      }
-    };
+      console.error("Unexpected error: ", err);
+    }
+  };
 
-  
   const allergyOptions = [
     "Dairy-free",
     "Gluten-free",

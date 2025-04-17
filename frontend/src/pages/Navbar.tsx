@@ -21,24 +21,26 @@ export const Navbar: React.FC<NavBarProps> = ({ isLoggedIn = false }) => {
         <li>
           <Link to="/home">Home</Link>
         </li>
-        <li>
-          <Link to="/events">Create Events</Link>
-        </li>
-        <li>
-          <Link to="/food">Food Sign Up</Link>
-        </li>
-        
+
         {/* Conditional Profile Icon or Auth Link */}
         {isLoggedIn ? (
-          <li>
-            <Link to="/profile">
-              <img
-                src={profile}
-                alt="Profile"
-                className={styles.profileImage}
-              />
-            </Link>
-          </li>
+          <>
+            <li>
+              <Link to="/events">Create Events</Link>
+            </li>
+            <li>
+              <Link to="/food">Food Sign Up</Link>
+            </li>
+            <li>
+              <Link to="/profile">
+                <img
+                  src={profile}
+                  alt="Profile"
+                  className={styles.profileImage}
+                />
+              </Link>
+            </li>
+          </>
         ) : (
           <li>
             <Link to="/sign-in">Sign In / Sign Up</Link>
