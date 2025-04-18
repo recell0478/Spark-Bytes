@@ -23,6 +23,8 @@ const ProfilePage: React.FC = () => {
   const navigate = useNavigate();
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
+  // adding a notification state
+  const [notification, setNotification] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProfile = async () => {
