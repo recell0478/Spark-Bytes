@@ -6,7 +6,7 @@ import { Navbar } from "./Navbar";
 
 const EditEvent: React.FC = () => {
     const navigate = useNavigate();
-    const checkingAuth = useProtectRoute();
+    // const checkingAuth = useProtectRoute();
     const [eventData, setEventData] = useState({
         eventName: "",
         spots: 0,
@@ -43,8 +43,8 @@ const EditEvent: React.FC = () => {
         fetchEvent();
     }, []);
 
-    if (checkingAuth) 
-        return null;
+    // if (checkingAuth) 
+    //     return null;
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEventData({ ...eventData, [e.target.name]: e.target.value});
@@ -106,20 +106,22 @@ const EditEvent: React.FC = () => {
                 ].map(({ label, name, type = "text"}) => (
                     <div key={name} style={{ marginBottom: "1.5rem"}}
                     >
-                        <label style={{ fontWeight: 600, marginRight: "1rem"}}>{label}:</label>
+                        <label style={{ fontWeight: 600, marginRight: "1rem", paddingLeft: "1rem"}}>{label}:</label>
                         <input
                             type={type}
                             name={name}
                             value={eventData[name as keyof typeof eventData]}
                             onChange={handleChange}
                             style={{
-                                padding: "0.75rem",
+                                padding: "1rem",
                                 backgroundColor: "#eee",
                                 border: "1px solid #ccc",
                                 width: "100%",
                                 marginTop: "0.5rem",
                                 fontSize: "1rem",
-                            }}
+                                textAlign: "center",
+                                paddingLeft: "1rem",
+                            }} 
                         />
                     </div>
                 ))}
@@ -129,7 +131,8 @@ const EditEvent: React.FC = () => {
                     style={{
                         display: "flex",
                         justifyContent: "flex-end",
-                        gap: "1rem"
+                        gap: "1rem",
+                        paddingRight: "2rem",
                     }}
                 >
                     <button
@@ -138,10 +141,11 @@ const EditEvent: React.FC = () => {
                             backgroundColor: "#e71f1f",
                             color:"#fff",
                             border: "none",
-                            padding: "0.75rem 1.5rem",
+                            padding: "1rem 1.5rem",
                             borderRadius: "20px",
                             cursor: "pointer",
                             fontWeight: 500,
+                            textAlign: "center",
                         }}
                     >
                         Save Changes
@@ -152,7 +156,7 @@ const EditEvent: React.FC = () => {
                             backgroundColor: "#fff",
                             color: "#e71f1f",
                             border: "2px solid #e71f1f",
-                            padding: "0.75rem 1.5rem",
+                            padding: "1rem 1.5rem",
                             borderRadius: "20px",
                             cursor: "pointer",
                             fontWeight: 500,
