@@ -23,6 +23,8 @@ const ProfilePage: React.FC = () => {
   const navigate = useNavigate();
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
+  // adding a notification state
+  const [notification, setNotification] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -82,9 +84,7 @@ const ProfilePage: React.FC = () => {
         minHeight: "100vh",
       }}
     >
-      <div style={{ fontFamily: "Inter, sans-serif" }}>
-        <Navbar />
-      </div>
+      <div style={{ fontFamily: "Inter, sans-serif" }}></div>
 
       {/* Profile Main */}
       <main style={{ maxWidth: 750, margin: "3rem auto", padding: "1rem" }}>

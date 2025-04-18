@@ -14,6 +14,7 @@ import EditProfile from "./pages/EditProfile";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const session = supabase.auth.getSession();
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setIsLoggedIn(!!session);
@@ -26,7 +27,12 @@ function App() {
     });
 
     return () => subscription.unsubscribe();
-  }, []);
+    // if (session) {
+    //   setIsLoggedIn(true);
+    // } else {
+    //   setIsLoggedIn(false);
+    // }
+  }, [session]);
 
   return (
     <Router>

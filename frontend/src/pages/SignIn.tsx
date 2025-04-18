@@ -145,18 +145,6 @@ const SignIn: React.FC = () => {
             >
               SIGN IN
             </button>
-
-            <a
-              href="#"
-              style={{
-                textAlign: "center",
-                fontSize: "0.95rem",
-                textDecoration: "underline",
-                color: "#555",
-              }}
-            >
-              Forgot Password?
-            </a>
           </form>
         </div>
       </div>
