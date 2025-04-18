@@ -82,9 +82,7 @@ const ProfilePage: React.FC = () => {
         minHeight: "100vh",
       }}
     >
-      <div style={{ fontFamily: "Inter, sans-serif" }}>
-        <Navbar />
-      </div>
+      <div style={{ fontFamily: "Inter, sans-serif" }}></div>
 
       {/* Profile Main */}
       <main style={{ maxWidth: 750, margin: "3rem auto", padding: "1rem" }}>
