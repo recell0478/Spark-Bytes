@@ -7,9 +7,9 @@ import { supabase } from "../utils/supabaseClient.ts";
 const EditProfile: React.FC = () => {
     const navigate = useNavigate();
 
-    const checkingAuth = useProtectRoute();
-    if (checkingAuth) 
-        return null;
+    // const checkingAuth = useProtectRoute();
+    // if (checkingAuth) 
+    //     return null;
 
     const [name, setName] = useState("Khang Le");
 
@@ -73,27 +73,47 @@ const EditProfile: React.FC = () => {
   return (
     <div style={{ fontFamily: "Inter, sans-serif" }}>
       <Navbar isLoggedIn={true} />
-      <main style={{ maxWidth: "700px", margin: "2rem auto", padding: "1rem" }}>
-        <h1 style={{ fontSize: "2rem", borderBottom: "1px solid #aaa", marginBottom: "2rem" }}>
-          Edit Personal Profile
+      <main 
+        style={{ 
+            maxWidth: "700px", 
+            margin: "2rem auto", 
+            padding: "1rem" 
+        }}
+        >
+        <h1 
+            style={{ 
+                fontSize: "2rem", 
+                borderBottom: "1px solid #aaa", 
+                marginBottom: "2rem", 
+                marginTop: "5rem" 
+            }}
+        >
+            Edit Personal Profile
         </h1>
 
-                {/* Avatar */}
-                <div style={{ display: "flex", justifyContent: "center", marginBottom: "2rem"}}>
-                    <div
+                {/* Avatar Upload Section */}
+                <div 
+                style={{ display: "flex", flexDirection: "column", alignItems: "center", marginBottom: "2rem" }}>
+                    {/* Avatar as clickable label */}
+                    <label
+                        htmlFor="profile-upload"
                         style={{
-                            position: "relative",
-                            width: 100,
-                            height: 100,
-                            borderRadius: "50%",
-                            backgroundColor: "#f1f1f1",
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            border: "1px solid #aaa",
+                        position: "relative",
+                        width: 100,
+                        height: 100,
+                        borderRadius: "50%",
+                        backgroundColor: "#f1f1f1",
+                        border: "1px solid #ccc",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        cursor: "pointer",
                         }}
                     >
-                        👤
+                        {/* Avatar emoji or user image */}
+                        <span style={{ fontSize: "2rem" }}>👤</span>
+
+                        {/* Edit icon overlay */}
                         <span
                             style={{
                                 position: "absolute",
@@ -103,18 +123,21 @@ const EditProfile: React.FC = () => {
                                 borderRadius: "50%",
                                 padding: "2px",
                                 border: "1px solid #ccc",
-                                padding: "0.25rem",
+                                fontSize: "1rem",
                             }}
                         >
                             ✏️
                         </span>
-                        <input
-                            type="file"
-                            accept="image/*"
-                            onChange={handleImageUpload}
-                            style={{ marginTop: "1rem"}}
-                        />
-                    </div>
+                    </label>
+
+                    {/* Hidden File Input */}
+                    <input
+                        id="profile-upload"
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => console.log("Selected file:", e.target.files?.[0])}
+                        style={{ display: "none" }}
+                    />
                 </div>
 
                 {/* Name */}
@@ -220,7 +243,8 @@ const EditProfile: React.FC = () => {
                     style={{
                         display: "flex",
                         justifyContent: "flex-end",
-                        gap: "1rem"
+                        gap: "1rem",
+                        paddingRight: "3rem"
                     }}
                 >
                     <button
