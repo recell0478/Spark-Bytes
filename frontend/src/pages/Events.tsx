@@ -17,17 +17,16 @@ function Events() {
         data: { session },
       } = await supabase.auth.getSession();
       if (!session) {
-        navigate("/sign-in"); // or wherever you want to send unauthenticated users
+        navigate("/sign-in"); 
       } else {
-        setLoading(false); // only allow rendering after auth is confirmed
+        setLoading(false); 
       }
     };
     checkUser();
   }, [navigate]);
   const onFinish = async (values: any) => {
     console.log("Form values: ", values);
-    const navigate = useNavigate();
-    useRedirectIfAuthenticated("/profile");
+    
 
     try {
       const { data, error } = await supabase.from("Events").insert([
