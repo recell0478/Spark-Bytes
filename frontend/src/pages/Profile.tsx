@@ -125,20 +125,6 @@ const ProfilePage: React.FC = () => {
             }}
           >
             👤
-            <span
-              style={{
-                position: "absolute",
-                bottom: 8,
-                right: 8,
-                backgroundColor: "#fff",
-                border: "1px solid #ccc",
-                borderRadius: "50%",
-                padding: "4px 6px",
-                fontSize: "0.8rem",
-                cursor: "pointer",
-              }}
-              title="Edit"
-            ></span>
           </div>
         </div>
 

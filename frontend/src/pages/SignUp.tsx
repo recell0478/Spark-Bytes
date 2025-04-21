@@ -82,14 +82,15 @@ const SignUp: React.FC = () => {
         <button
           onClick={() => navigate("/sign-in")}
           style={{
-            backgroundColor: "transparent",
-            color: "#fff",
+            backgroundColor: "#fff",
+            color: "#e71f1f",
             border: "2px solid #fff",
             borderRadius: "25px",
             padding: "0.75rem 2rem",
             fontSize: "1rem",
             fontWeight: "bold",
             cursor: "pointer",
+            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.3)",
           }}
         >
           SIGN IN
@@ -206,6 +207,8 @@ const SignUp: React.FC = () => {
                 borderRadius: "6px",
                 fontWeight: "bold",
                 cursor: "pointer",
+                marginBottom: "2rem",
+                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.3)",
               }}
             >
               SIGN UP
