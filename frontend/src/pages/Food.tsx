@@ -134,8 +134,20 @@ export default function RegisterPage() {
               {formatTime(evt.time_end)}
             </p>
             <p>
-              <strong>Allergy:</strong> {evt.allergens ?? "None specified"}
+              <strong>Allergy:</strong>{" "}
+              {(() => {
+                if (!evt.allergens) return "None specified";
+                try {
+                  const parsed = JSON.parse(evt.allergens);
+                  return Array.isArray(parsed) && parsed.length > 0
+                    ? parsed.join(", ")
+                    : "None specified";
+                } catch (e) {
+                  return evt.allergens; // fallback in case it's just a plain string
+                }
+              })()}
             </p>
+
             <p>
               <strong>Food Description:</strong> {evt.description ?? "—"}
             </p>
