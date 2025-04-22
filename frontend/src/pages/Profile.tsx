@@ -317,7 +317,7 @@ const ProfilePage: React.FC = () => {
               borderRadius: 10, padding: "1rem", 
               marginBottom: "1rem" }}>
 
-              <h3>{event.name}</h3>
+              <h2>{event.name}</h2>
               <p><strong>Location:</strong> {event.location}</p>
               <p><strong>Start:</strong> {formatTime(event.time_start)}</p>
               <p><strong>End:</strong> {formatTime(event.time_end)}</p>
