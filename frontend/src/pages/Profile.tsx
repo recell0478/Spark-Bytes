@@ -72,6 +72,20 @@ const ProfilePage: React.FC = () => {
     fetchProfileAndEvents();
   }, [navigate]);
 
+  const handleUnregister = async (regId: number) => {
+    if (!window.confirm("Are you sure you want to unregister from this event?")) return;
+    const { error } = await supabase
+      .from("Events_emails")
+      .delete()
+      .eq("id", regId);
+    if (error) {
+      console.error("Error unregistering:", error);
+      alert("Failed to unregister.");
+    } else {
+      setRegisteredEvents((regs) => regs.filter((r) => r.id !== regId));
+    }
+  };
+
   const handleEdit = (eventId: number) => {
     navigate(`/edit-events?id=${eventId}`);
   };
@@ -292,6 +306,7 @@ const ProfilePage: React.FC = () => {
           registeredEvents.map((event) => (
             <div
               key={event.id}
+              
               style={{
                 marginBottom: "1rem",
                 padding: "1rem",
@@ -299,7 +314,17 @@ const ProfilePage: React.FC = () => {
                 borderRadius: "10px",
               }}
             >
-              <p><strong>Event Name:</strong> {event.event_name}</p>
+              <h2><strong>Event Name:</strong> {event.event_name}</h2>
+              <p><strong>Spots Remaining:</strong> {event.spots_remaining}</p>
+              <p><strong>Start TIme:</strong> {event.time_start}</p>
+              <p><strong>End TIme:</strong> {event.time_end}</p>
+              <p><strong>Description:</strong> {event.description}</p>
+              <p><strong>Allergens:</strong> {event.allergens}</p>
+              <Button danger onClick={() => handleUnregister(event.id)}>Unregister</Button>
+
+
+
+
             </div>
           ))
         ) : (
