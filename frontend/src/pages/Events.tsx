@@ -9,7 +9,9 @@ import { useNavigate } from "react-router-dom";
 import useRedirectIfAuthenticated from "../hooks/useRedirectedIfAuthenticated";
 
 function Events() {
+
   const navigate = useNavigate();
+
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     const checkUser = async () => {
@@ -29,6 +31,10 @@ function Events() {
     
 
     try {
+
+      const { data: { user } } = await supabase.auth.getUser();
+      const email = user?.email;
+      
       const { data, error } = await supabase.from("Events").insert([
         {
           name: values.eventName,
@@ -38,6 +44,9 @@ function Events() {
           time_start: values.startTime,
           time_end: values.endTime,
           allergens: values.allergy,
+          creator_email: email, // store creator's email
+
+          
         },
       ]);
 
