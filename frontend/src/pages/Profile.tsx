@@ -255,7 +255,7 @@ const ProfilePage: React.FC = () => {
                   backgroundColor: "#4CAF50",
                   borderColor: "#4CAF50",
                 }}
-                onClick={() => navigate("/edit-event")}
+                onClick={() => navigate(`/edit-events/${event.id}`)}
                 >
                 Edit
               </Button>

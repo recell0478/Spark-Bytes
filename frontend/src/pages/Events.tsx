@@ -34,7 +34,7 @@ function Events() {
 
       const { data: { user } } = await supabase.auth.getUser();
       const email = user?.email;
-      
+
       const { data, error } = await supabase.from("Events").insert([
         {
           name: values.eventName,
@@ -44,7 +44,7 @@ function Events() {
           time_start: values.startTime,
           time_end: values.endTime,
           allergens: values.allergy,
-          creator_email: email, // store creator's email
+          creator_email: email, 
 
           
         },
