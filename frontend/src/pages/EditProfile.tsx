@@ -1,29 +1,49 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Navbar } from "./Navbar.tsx";
+import { Navbar } from "./Navbar";
 import useProtectRoute from "../hooks/useProtectRoute";
-import { supabase } from "../utils/supabaseClient.ts";
+import { supabase } from "../utils/supabaseClient";
 
 const EditProfile: React.FC = () => {
     const navigate = useNavigate();
+    const checkingAuth = useProtectRoute();
+    const [loading, setLoading] = useState(true);
 
-    // const checkingAuth = useProtectRoute();
-    // if (checkingAuth) 
-    //     return null;
-
-    const [name, setName] = useState("Khang Le");
-
-    const [allergens, setAllergens] = useState(
-        "milk, eggs, peanuts, tree nuts, soy, wheat, fish, and shellfish"
-    );
-
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [allergens, setAllergens] = useState("");
     const [uploadedUrl, setUploadedUrl] = useState<string | null>(null);
 
+    useEffect(() => {
+        const fetchProfile = async () => {
+            const { data: { user } } = await supabase.auth.getUser();
+            
+            if (!user) {
+                navigate("/sign-in");
+                return;
+            }
+
+            const { data, error } = await supabase
+                .from("users")
+                .select("fullname, email, allergens, profile_image")
+                .eq("email", user.email)
+                .single();
+
+            if (!error && data) {
+                setName(data.fullname || "");
+                setEmail(data.email || "");
+                setAllergens(data.allergens || "");
+                setUploadedUrl(data.profile_image || null);
+            }
+            
+            setLoading(false);
+        };
+
+        fetchProfile();
+    }, [navigate]);
+
     const handleSave = async () => {
-        const {
-            data: { user },
-            error: userError,
-        } = await supabase.auth.getUser();
+        const { data: { user }, error: userError } = await supabase.auth.getUser();
         
         if (userError || !user) {
             alert("Not logged in.");
@@ -31,22 +51,22 @@ const EditProfile: React.FC = () => {
         }
 
         const { error } = await supabase
-            .from("profiles")
+            .from("users")
             .update({
-                name,
+                fullname: name,
                 allergens,
-                avatar_url: uploadedUrl,
+                profile_image: uploadedUrl
             })
-            .eq("id", user.id);
+            .eq("email", user.email);
 
-            if (error) {
-                alert("Failed to update profile.");
-            } else {
-                alert("Changes saved!");
-                navigate("/profile");
-            }
+        if (error) {
+            alert("Failed to update profile: " + error.message);
+        } else {
+            navigate("/profile");
+        }
     };
 
+    // Fix storage bucket name
     const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
@@ -59,114 +79,77 @@ const EditProfile: React.FC = () => {
 
         if (error) {
             console.error("Upload error:", error);
-            alert("Failed to upload image.");
             return;
         }
 
-        const { data } = supabase.storage  
-            .from("avatars:")
+        const { data } = supabase.storage
+            .from("avatars") // Fixed colon typo
             .getPublicUrl(fileName);
 
         setUploadedUrl(data.publicUrl);
     }
 
-  return (
-    <div style={{ fontFamily: "Inter, sans-serif" }}>
-      <Navbar isLoggedIn={true} />
-      <main 
-        style={{ 
-            maxWidth: "700px", 
-            margin: "2rem auto", 
-            padding: "1rem" 
-        }}
-        >
-        <h1 
-            style={{ 
-                fontSize: "2rem", 
-                borderBottom: "1px solid #aaa", 
-                marginBottom: "2rem", 
-                marginTop: "5rem" 
-            }}
-        >
-            Edit Personal Profile
-        </h1>
+    if (loading) {
+        return <div>Loading profile...</div>;
+    }
 
-                {/* Avatar Upload Section */}
-                <div 
-                style={{ display: "flex", flexDirection: "column", alignItems: "center", marginBottom: "2rem" }}>
-                    {/* Avatar as clickable label */}
-                    <label
-                        htmlFor="profile-upload"
+    return (
+        <div style={{ fontFamily: "Inter, sans-serif"}}>
+            <Navbar isLoggedIn={true} /> 
+            <main style = {{ maxWidth: "700px", margin: "2rem auto" }}>
+                <h1 style= {{ fontSize: "2rem", borderBottom: "1px solid #aaa", paddingBottom: "0.5rem", marginBottom: "2rem"}}>
+                    Edit Personal Profile
+                </h1>
+
+                {/* Avatar */}
+                <div style={{ display: "flex", justifyContent: "center", marginBottom: "2rem"}}>
+                    
+                    <div
                         style={{
-                        position: "relative",
-                        width: 100,
-                        height: 100,
-                        borderRadius: "50%",
-                        backgroundColor: "#f1f1f1",
-                        border: "1px solid #ccc",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        cursor: "pointer",
+                            position: "relative",
+                            width: 100,
+                            height: 100,
+                            borderRadius: "50%",
+                            backgroundColor: "#eee",
+                            fontSize: "2rem",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            border: "1px solid #aaa",
+                            
+
                         }}
                     >
-                        {/* Avatar emoji or user image */}
-                        <span style={{ fontSize: "2rem" }}>👤</span>
-
-                        {/* Edit icon overlay */}
+                        👤
                         <span
                             style={{
                                 position: "absolute",
                                 bottom: 5,
                                 right: 5,
+                                fontSize: "0.8rem",
                                 backgroundColor: "#fff",
                                 borderRadius: "50%",
-                                padding: "2px",
                                 border: "1px solid #ccc",
-                                fontSize: "1rem",
+                                padding: "0.25rem",
+                                
+                                
                             }}
-                        >
+                        >   
                             ✏️
                         </span>
-                    </label>
+                        <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleImageUpload}
+                            style={{ marginTop: "10em", 
+                                padding: "5rem",
 
-                    {/* Hidden File Input */}
-                    <input
-                        id="profile-upload"
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) => console.log("Selected file:", e.target.files?.[0])}
-                        style={{ display: "none" }}
-                    />
+                            }}
+                            
+                        />
+                    </div>
+
                 </div>
-
-                {/* Name */}
-                <div
-                    style={{ marginBottom: "1.5rem"}} 
-                >
-                    <label
-                        style={{
-                            fontWeight: 600,
-                            display: "block",
-                            marginBottom: "0.25rem"
-                        }}
-                    >
-                        Name:
-                    </label>
-                    <input
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        style={{
-                            padding: "0.75rem",
-                            width: "100%",
-                            backgroundColor: "#eee",
-                            border: "1px solid #ccc",
-                            fontSize: "1rem",
-                            textAlign: "center",
-                        }}
-                    />
-                </div>
-
                 {/* Email (Read-only) */}
                 <div
                     style={{ 
@@ -183,9 +166,37 @@ const EditProfile: React.FC = () => {
                     <span
                         style={{ marginLeft: "1rem" }}
                     >
-                        hle1@bu.edu
+                        {email || "Loading..."}
                     </span>
                 </div>
+
+                {/* Name */}
+                <div
+                    style={{ marginBottom: "1.5rem"}} 
+                >
+                    <label
+                        style={{
+                            fontWeight: 600,
+                            display: "block",
+                            marginBottom: "0.25rem"
+                        }}
+                    >
+                        Edit Name:
+                    </label>
+                    <input
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        style={{
+                            padding: "0.75rem",
+                            width: "100%",
+                            backgroundColor: "#eee",
+                            border: "1px solid #ccc",
+                            fontSize: "1rem",
+                        }}
+                    />
+                </div>
+
+                
 
                 {/* Registered Events (Read-only) */}
                 <div
@@ -222,7 +233,7 @@ const EditProfile: React.FC = () => {
                             marginBottom:"0.25rem"
                         }}
                     >
-                        Allergens:
+                        Edit Allergens:
                     </label>
                     <input
                         value={allergens}
@@ -233,7 +244,6 @@ const EditProfile: React.FC = () => {
                             backgroundColor: "#eee",
                             border: "1px solid #ccc",
                             fontSize: "1rem",
-                            textAlign: "center",
                         }}
                     />
                 </div>
@@ -243,8 +253,7 @@ const EditProfile: React.FC = () => {
                     style={{
                         display: "flex",
                         justifyContent: "flex-end",
-                        gap: "1rem",
-                        paddingRight: "3rem"
+                        gap: "1rem"
                     }}
                 >
                     <button
