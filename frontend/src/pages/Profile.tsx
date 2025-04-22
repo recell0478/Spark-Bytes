@@ -5,6 +5,9 @@ import { Button, Divider } from "antd";
 import useProtectRoute from "../hooks/useProtectRoute";
 import { Navbar } from "./Navbar";
 import { useLocation } from "react-router";
+import RegisteredEvents from "./profilecards/RegisteredEvents";
+import dayjs from "dayjs";
+
 
 interface UserProfile {
   id: string;
@@ -45,13 +48,16 @@ const ProfilePage: React.FC = () => {
         setUserProfile(profileData);
 
         // Fetch registered events
-        const { data: registeredData, error: registeredError } = await supabase
+        const { data: regsData, error: regsError } = await supabase
           .from("Events_emails")
-          .select("*")
+          .select(
+            `id, event:Events(id, name, location, time_start, time_end, allergens, description, spots_remaining)`
+          )
           .eq("email", user.email);
-
-        if (registeredError) throw registeredError;
-        setRegisteredEvents(registeredData || []);
+        if (regsError) throw regsError;
+        setRegisteredEvents(
+          regsData.map((r: any) => ({ id: r.id, event: r.event }))
+        );
 
         // Fetch events created by user
         const { data: createdEvents, error: createdError } = await supabase
@@ -85,6 +91,8 @@ const ProfilePage: React.FC = () => {
       setRegisteredEvents((regs) => regs.filter((r) => r.id !== regId));
     }
   };
+  const formatTime = (t: string | null) =>
+      t ? dayjs(`1970-01-01T${t}`).format("h:mm A") : "—";
 
   const handleEdit = (eventId: number) => {
     navigate(`/edit-events?id=${eventId}`);
@@ -299,32 +307,24 @@ const ProfilePage: React.FC = () => {
         >
           Registered Events
         </h1>
-        <Divider
-          style={{ height: "0.3px", backgroundColor: "#000", marginTop: "0" }}
-        />
+        <Divider />
+
         {registeredEvents.length > 0 ? (
-          registeredEvents.map((event) => (
-            <div
-              key={event.id}
-              
-              style={{
-                marginBottom: "1rem",
-                padding: "1rem",
-                border: "1px solid #ccc",
-                borderRadius: "10px",
-              }}
-            >
-              <h2><strong>Event Name:</strong> {event.event_name}</h2>
+          registeredEvents.map(({ id, event }) => (
+            <div key={id} 
+            style={{ 
+              border: "1px solid #ccc", 
+              borderRadius: 10, padding: "1rem", 
+              marginBottom: "1rem" }}>
+
+              <h3>{event.name}</h3>
+              <p><strong>Location:</strong> {event.location}</p>
+              <p><strong>Start:</strong> {formatTime(event.time_start)}</p>
+              <p><strong>End:</strong> {formatTime(event.time_end)}</p>
               <p><strong>Spots Remaining:</strong> {event.spots_remaining}</p>
-              <p><strong>Start TIme:</strong> {event.time_start}</p>
-              <p><strong>End TIme:</strong> {event.time_end}</p>
-              <p><strong>Description:</strong> {event.description}</p>
               <p><strong>Allergens:</strong> {event.allergens}</p>
-              <Button danger onClick={() => handleUnregister(event.id)}>Unregister</Button>
-
-
-
-
+              <p><strong>Description:</strong> {event.description}</p>
+              <Button danger onClick={() => handleUnregister(id)}>Unregister</Button>
             </div>
           ))
         ) : (
