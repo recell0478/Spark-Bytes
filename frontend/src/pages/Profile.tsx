@@ -1,14 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import { useNavigate } from "react-router-dom";
 import { supabase } from "../utils/supabaseClient";
-import Image from "next/image";
-import styles from "./Profile.module.css";
 import { Button, Divider } from "antd";
-import Myevents from "./profilecards/Myevents";
-import RegisteredEvents from "./profilecards/RegisteredEvents";
-import { useNavigate } from "react-router";
 import useProtectRoute from "../hooks/useProtectRoute";
-import { Navbar } from "./Navbar.tsx";
+import { Navbar } from "./Navbar";
+import { useLocation } from "react-router";
 
 interface UserProfile {
   id: string;
@@ -22,46 +18,88 @@ const ProfilePage: React.FC = () => {
   const checkingAuth = useProtectRoute("/sign-in");
   const navigate = useNavigate();
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+  const [registeredEvents, setRegisteredEvents] = useState<any[]>([]);
+  const [myEvents, setMyEvents] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  // adding a notification state
-  const [notification, setNotification] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchProfile = async () => {
+    const fetchProfileAndEvents = async () => {
       try {
-        console.log("Starting profile fetch...");
         const {
           data: { user },
         } = await supabase.auth.getUser();
-        console.log("Auth user:", user);
 
         if (!user) {
-          console.log("No authenticated user");
           navigate("/sign-in");
           return;
         }
 
-        console.log("Fetching profile for ID:", user.id);
-        const { data, error } = await supabase
+        // Fetch user profile
+        const { data: profileData, error: profileError } = await supabase
           .from("users")
           .select("id, email, fullname, created_at, allergens")
           .eq("email", user.email)
           .single();
 
-        console.log("Profile data response:", { data, error });
-        if (error) throw error;
+        if (profileError) throw profileError;
+        setUserProfile(profileData);
 
-        setUserProfile(data);
+        // Fetch registered events
+        const { data: registeredData, error: registeredError } = await supabase
+          .from("Events_emails")
+          .select("*")
+          .eq("email", user.email);
+
+        if (registeredError) throw registeredError;
+        setRegisteredEvents(registeredData || []);
+
+        // Fetch events created by user
+        const { data: createdEvents, error: createdError } = await supabase
+          .from("Events")
+          .select("*")
+          .eq("id", profileData.id);
+
+        if (createdError) throw createdError;
+        setMyEvents(createdEvents || []);
       } catch (error) {
-        console.error("Error:", error);
+        console.error("Error loading profile or events:", error);
         setUserProfile(null);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchProfile();
+    fetchProfileAndEvents();
   }, [navigate]);
+
+  const handleEdit = (eventId: number) => {
+    navigate(`/edit-events?id=${eventId}`);
+  };
+
+  const handleDelete = async (eventId: number) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this event?");
+    if (confirmDelete) {
+      const { error } = await supabase
+        .from("Events")
+        .delete()
+        .eq("id", eventId);
+
+      if (error) {
+        console.error("Error deleting event:", error);
+      } else {
+        alert("Event deleted successfully.");
+        if (userProfile) {
+          // Refresh after deletion
+          const { data: eventsData, error: eventsError } = await supabase
+            .from("Events")
+            .select("*")
+            .eq("created_by", userProfile.id);
+
+          if (!eventsError) setMyEvents(eventsData || []);
+        }
+      }
+    }
+  };
 
   const onSignOut = async () => {
     await supabase.auth.signOut();
@@ -84,7 +122,7 @@ const ProfilePage: React.FC = () => {
         minHeight: "100vh",
       }}
     >
-      <div style={{ fontFamily: "Inter, sans-serif" }}></div>
+      <Navbar isLoggedIn={true} />
 
       {/* Profile Main */}
       <main style={{ maxWidth: 750, margin: "3rem auto", padding: "1rem" }}>
@@ -133,7 +171,6 @@ const ProfilePage: React.FC = () => {
           {[
             { label: "Name", value: userProfile.fullname },
             { label: "BU Email", value: userProfile.email },
-            //{ label: "Signed Up Events", value: userProfile.events.join(", ") },
             { label: "Allergens", value: userProfile.allergens },
           ].map(({ label, value }) => (
             <div
@@ -161,6 +198,7 @@ const ProfilePage: React.FC = () => {
           ))}
         </div>
 
+        {/* Buttons */}
         <div style={{ display: "flex", gap: "20px", justifyContent: "center" }}>
           <Button
             type="primary"
@@ -181,7 +219,9 @@ const ProfilePage: React.FC = () => {
           </Button>
         </div>
       </main>
-      <div>
+
+      {/* My Events */}
+      <div style={{ maxWidth: 1000, margin: "3rem auto", padding: "1rem" }}>
         <h1
           style={{
             fontFamily: "'Abhaya Libre', serif",
@@ -196,10 +236,44 @@ const ProfilePage: React.FC = () => {
         <Divider
           style={{ height: "0.3px", backgroundColor: "#000", marginTop: "0" }}
         />
-        <Myevents />
+        {myEvents.length > 0 ? (
+          myEvents.map((event) => (
+            <div
+              key={event.id}
+              style={{
+                marginBottom: "1.5rem",
+                padding: "1rem",
+                border: "1px solid #ccc",
+                borderRadius: "10px",
+              }}
+            >
+              <h3>{event.name}</h3>
+              <p><strong>Location:</strong> {event.location}</p>
+              <Button
+                style={{
+                  marginRight: "1rem",
+                  backgroundColor: "#4CAF50",
+                  borderColor: "#4CAF50",
+                }}
+                onClick={() => handleEdit(event.id)}
+              >
+                Edit
+              </Button>
+              <Button
+                danger
+                onClick={() => handleDelete(event.id)}
+              >
+                Delete
+              </Button>
+            </div>
+          ))
+        ) : (
+          <p>No events created yet.</p>
+        )}
       </div>
 
-      <div>
+      {/* Registered Events */}
+      <div style={{ maxWidth: 1000, margin: "3rem auto", padding: "1rem" }}>
         <h1
           style={{
             fontFamily: "'Abhaya Libre', serif",
@@ -214,7 +288,23 @@ const ProfilePage: React.FC = () => {
         <Divider
           style={{ height: "0.3px", backgroundColor: "#000", marginTop: "0" }}
         />
-        <RegisteredEvents />
+        {registeredEvents.length > 0 ? (
+          registeredEvents.map((event) => (
+            <div
+              key={event.id}
+              style={{
+                marginBottom: "1rem",
+                padding: "1rem",
+                border: "1px solid #ccc",
+                borderRadius: "10px",
+              }}
+            >
+              <p><strong>Event Name:</strong> {event.event_name}</p>
+            </div>
+          ))
+        ) : (
+          <p>No registered events yet.</p>
+        )}
       </div>
     </div>
   );
