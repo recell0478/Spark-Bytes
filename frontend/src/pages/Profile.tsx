@@ -57,7 +57,7 @@ const ProfilePage: React.FC = () => {
         const { data: createdEvents, error: createdError } = await supabase
           .from("Events")
           .select("*")
-          .eq("id", profileData.id);
+          .eq("creator_email", profileData.email);
 
         if (createdError) throw createdError;
         setMyEvents(createdEvents || []);
