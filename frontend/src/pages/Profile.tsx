@@ -265,10 +265,13 @@ const ProfilePage: React.FC = () => {
             <div
               key={event.id}
               style={{
-                marginBottom: "1.5rem",
+                border: "1px solid #eee",
+                borderRadius: 3,
                 padding: "1rem",
-                border: "1px solid #ccc",
-                borderRadius: "10px",
+                marginBottom: "1rem",
+                margin: "60px auto",
+                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.07)",
+                backgroundColor: "#ffffff",
               }}
             >
               <h3>{event.name}</h3>
@@ -308,17 +311,22 @@ const ProfilePage: React.FC = () => {
         >
           Registered Events
         </h1>
-        <Divider />
+        <Divider
+          style={{ height: "0.3px", backgroundColor: "#000", marginTop: "0" }}
+        />
 
         {registeredEvents.length > 0 ? (
           registeredEvents.map(({ id, event }) => (
             <div
               key={id}
               style={{
-                border: "1px solid #ccc",
-                borderRadius: 10,
+                border: "1px solid #eee",
+                borderRadius: 3,
                 padding: "1rem",
                 marginBottom: "1rem",
+                margin: "60px auto",
+                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.07)",
+                backgroundColor: "#ffffff",
               }}
             >
               <h2>{event.name}</h2>

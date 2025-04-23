@@ -120,7 +120,15 @@ export default function RegisterPage() {
             title={
               <span style={{ fontSize: 24, fontWeight: 700 }}>{evt.name}</span>
             }
-            style={{ marginBottom: 32, fontSize: 18 }}
+            style={{
+              marginBottom: 32,
+              fontSize: 18,
+              margin: "60px auto",
+              padding: "24px", // changed from "0 12px" to match form padding
+              boxShadow: "0 4px 12px rgba(0, 0, 0, 0.09)",
+              borderRadius: "8px",
+              backgroundColor: "#ffffff",
+            }}
           >
             <p>
               <strong>Number of Spots:</strong>{" "}

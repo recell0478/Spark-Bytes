@@ -5,3 +5,101 @@ h1 {
     font-family: 'Abhaya Libre', serif;
     font-weight: 800;
 }
+
+.homeContainer {
+    padding: 20px;
+    font-family: 'Abhaya Libre', serif;
+  }
+  
+  .heroSection {
+    margin-top: 100px;
+  }
+  
+  .heroContent {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  .heroImage {
+    width: 300px;
+    max-width: 100%;
+  }
+  
+  .heroText h1 {
+    font-weight: 800;
+    font-size: 3rem;
+    line-height: 1.2;
+    margin: 0;
+    text-align: center;
+  }
+  
+  .customDivider {
+    border-color: #333;
+    margin: 60px auto;
+  }
+  
+  .sectionTitle {
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .sectionDescription {
+    font-size: 1.5rem;
+    text-align: left;
+    max-width: 800px;
+    margin: 0 auto 40px;
+  }
+  .ctaButton {
+    background-color: #E71F1F;
+    border-color: #E71F1F;
+    font-size: 1.5rem;
+    padding: 20px 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 40px;
+    min-width: 180px;
+    text-align: center;
+    height: auto;
+    line-height: 1.2;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .ctaButton:hover {
+    transform: scale(1.05); /* slightly enlarge on hover */
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2); /* enhance the shadow */
+  }
+  
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .heroImage {
+        width: 150px; 
+      }
+    .heroText h1 {
+      font-size: 2rem;
+    }
+  
+    .sectionTitle {
+      font-size: 2rem;
+    }
+  
+    .sectionDescription {
+      font-size: 1.2rem;
+      padding: 0 10px;
+    }
+  
+    .ctaButton {
+      font-size: 1.2rem;
+      padding: 12px 30px;
+    }
+  }
+  
