@@ -8,7 +8,6 @@ import { useLocation } from "react-router";
 import RegisteredEvents from "./profilecards/RegisteredEvents";
 import dayjs from "dayjs";
 
-
 interface UserProfile {
   id: string;
   email: string;
@@ -79,7 +78,8 @@ const ProfilePage: React.FC = () => {
   }, [navigate]);
 
   const handleUnregister = async (regId: number) => {
-    if (!window.confirm("Are you sure you want to unregister from this event?")) return;
+    if (!window.confirm("Are you sure you want to unregister from this event?"))
+      return;
     const { error } = await supabase
       .from("Events_emails")
       .delete()
@@ -92,14 +92,16 @@ const ProfilePage: React.FC = () => {
     }
   };
   const formatTime = (t: string | null) =>
-      t ? dayjs(`1970-01-01T${t}`).format("h:mm A") : "—";
+    t ? dayjs(`1970-01-01T${t}`).format("h:mm A") : "—";
 
   const handleEdit = (eventId: number) => {
     navigate(`/edit-events?id=${eventId}`);
   };
 
   const handleDelete = async (eventId: number) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this event?");
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this event?"
+    );
     if (confirmDelete) {
       const { error } = await supabase
         .from("Events")
@@ -270,7 +272,9 @@ const ProfilePage: React.FC = () => {
               }}
             >
               <h3>{event.name}</h3>
-              <p><strong>Location:</strong> {event.location}</p>
+              <p>
+                <strong>Location:</strong> {event.location}
+              </p>
               <Button
                 style={{
                   marginRight: "1rem",
@@ -278,13 +282,10 @@ const ProfilePage: React.FC = () => {
                   borderColor: "#4CAF50",
                 }}
                 onClick={() => navigate(`/edit-events/${event.id}`)}
-                >
+              >
                 Edit
               </Button>
-              <Button
-                danger
-                onClick={() => handleDelete(event.id)}
-              >
+              <Button danger onClick={() => handleDelete(event.id)}>
                 Delete
               </Button>
             </div>
@@ -311,20 +312,51 @@ const ProfilePage: React.FC = () => {
 
         {registeredEvents.length > 0 ? (
           registeredEvents.map(({ id, event }) => (
-            <div key={id} 
-            style={{ 
-              border: "1px solid #ccc", 
-              borderRadius: 10, padding: "1rem", 
-              marginBottom: "1rem" }}>
-
+            <div
+              key={id}
+              style={{
+                border: "1px solid #ccc",
+                borderRadius: 10,
+                padding: "1rem",
+                marginBottom: "1rem",
+              }}
+            >
               <h2>{event.name}</h2>
-              <p><strong>Location:</strong> {event.location}</p>
-              <p><strong>Start:</strong> {formatTime(event.time_start)}</p>
-              <p><strong>End:</strong> {formatTime(event.time_end)}</p>
-              <p><strong>Spots Remaining:</strong> {event.spots_remaining}</p>
-              <p><strong>Allergens:</strong> {event.allergens}</p>
-              <p><strong>Description:</strong> {event.description}</p>
-              <Button danger onClick={() => handleUnregister(id)}>Unregister</Button>
+              <p>
+                <strong>Location:</strong> {event.location}
+              </p>
+              <p>
+                <strong>Start:</strong> {formatTime(event.time_start)}
+              </p>
+              <p>
+                <strong>End:</strong> {formatTime(event.time_end)}
+              </p>
+              <p>
+                <strong>Spots Remaining:</strong> {event.spots_remaining}
+              </p>
+              {/* fix the output of the allergens */}
+              <p>
+                <p>
+                  <strong>Allergy:</strong>{" "}
+                  {(() => {
+                    if (!event.allergens) return "None specified";
+                    try {
+                      const parsed = JSON.parse(event.allergens);
+                      return Array.isArray(parsed) && parsed.length > 0
+                        ? parsed.join(", ")
+                        : "None specified";
+                    } catch (e) {
+                      return event.allergens; // fallback in case it's just a plain string
+                    }
+                  })()}
+                </p>
+              </p>
+              <p>
+                <strong>Description:</strong> {event.description}
+              </p>
+              <Button danger onClick={() => handleUnregister(id)}>
+                Unregister
+              </Button>
             </div>
           ))
         ) : (
