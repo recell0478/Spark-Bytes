@@ -77,7 +77,7 @@ const EditProfile: React.FC = () => {
 
     const fileName = `${crypto.randomUUID()}.${file.name.split(".").pop()}`;
 
-    const { error: uploadError } = await supabase.storage
+    const { data: uploadData, error: uploadError } = await supabase.storage
       .from("avatars")
       .upload(fileName, file);
 
@@ -86,20 +86,24 @@ const EditProfile: React.FC = () => {
       return;
     }
 
-    const { data } = supabase.storage.from("avatars").getPublicUrl(fileName);
+    const { data: publicUrlData } = supabase.storage
+      .from("avatars")
+      .getPublicUrl(fileName);
 
-    if (!data?.publicUrl) {
+    if (!publicUrlData?.publicUrl) {
       console.error("Failed to get public URL");
       return;
     }
 
-    setUploadedUrl(data.publicUrl);
+    const publicUrl = publicUrlData.publicUrl;
+    setUploadedUrl(publicUrl);
 
     // Immediately update Supabase user profile with image URL
     const {
       data: { user },
       error: userError,
     } = await supabase.auth.getUser();
+
     if (userError || !user) {
       console.error("User not logged in");
       return;
@@ -107,11 +111,13 @@ const EditProfile: React.FC = () => {
 
     const { error: updateError } = await supabase
       .from("users")
-      .update({ profile_image: data.publicUrl })
+      .update({ profile_image: publicUrl })
       .eq("email", user.email);
 
     if (updateError) {
       console.error("Error saving image URL to Supabase:", updateError);
+    } else {
+      console.log("Image URL successfully saved to Supabase");
     }
   };
 

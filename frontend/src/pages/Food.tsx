@@ -173,7 +173,14 @@ export default function RegisterPage() {
                   borderColor: "#E71F1F",
                   minWidth: 160,
                   fontWeight: 600,
+                  transition: "transform 0.2s ease-in-out",
                 }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.transform = "scale(1.08)")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.transform = "scale(1)")
+                }
               >
                 Register
               </Button>

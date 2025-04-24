@@ -166,7 +166,17 @@ function Events() {
               type="primary"
               htmlType="submit"
               size="large"
-              style={{ backgroundColor: "#E71F1F", borderColor: "#E71F1F" }}
+              style={{
+                backgroundColor: "#E71F1F",
+                borderColor: "#E71F1F",
+                transition: "transform 0.2s ease-in-out",
+              }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.transform = "scale(1.05)")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.transform = "scale(1)")
+              }
             >
               Create Event
             </Button>

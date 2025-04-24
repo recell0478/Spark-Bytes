@@ -227,8 +227,16 @@ const ProfilePage: React.FC = () => {
           <Button
             type="primary"
             size="large"
-            style={{ backgroundColor: "#000", borderColor: "#000" }}
+            style={{
+              backgroundColor: "#000",
+              borderColor: "#000",
+              transition: "transform 0.2s ease-in-out",
+            }}
             onClick={() => navigate("/edit-profile")}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.transform = "scale(1.08)")
+            }
+            onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
           >
             Edit Profile
           </Button>
@@ -236,8 +244,16 @@ const ProfilePage: React.FC = () => {
             type="primary"
             htmlType="submit"
             size="large"
-            style={{ backgroundColor: "#000", borderColor: "#000" }}
+            style={{
+              backgroundColor: "#000",
+              borderColor: "#000",
+              transition: "transform 0.2s ease-in-out",
+            }}
             onClick={onSignOut}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.transform = "scale(1.08)")
+            }
+            onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
           >
             Log Out
           </Button>
@@ -272,12 +288,44 @@ const ProfilePage: React.FC = () => {
                 margin: "60px auto",
                 boxShadow: "0 4px 12px rgba(0, 0, 0, 0.07)",
                 backgroundColor: "#ffffff",
+                paddingTop: "30px",
+                paddingBottom: "30px",
               }}
             >
               <h3>{event.name}</h3>
               <p>
                 <strong>Location:</strong> {event.location}
               </p>
+              <p>
+                <strong>Start:</strong> {formatTime(event.time_start)}
+              </p>
+              <p>
+                <strong>End:</strong> {formatTime(event.time_end)}
+              </p>
+              <p>
+                <strong>Spots Remaining:</strong> {event.spots_remaining}
+              </p>
+              {/* fix the output of the allergens */}
+              <p>
+                <p>
+                  <strong>Allergy:</strong>{" "}
+                  {(() => {
+                    if (!event.allergens) return "None specified";
+                    try {
+                      const parsed = JSON.parse(event.allergens);
+                      return Array.isArray(parsed) && parsed.length > 0
+                        ? parsed.join(", ")
+                        : "None specified";
+                    } catch (e) {
+                      return event.allergens; // fallback in case it's just a plain string
+                    }
+                  })()}
+                </p>
+              </p>
+              <p>
+                <strong>Description:</strong> {event.description}
+              </p>
+
               <Button
                 style={{
                   marginRight: "1rem",
