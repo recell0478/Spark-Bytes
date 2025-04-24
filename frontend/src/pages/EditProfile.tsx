@@ -90,15 +90,14 @@ const EditProfile: React.FC = () => {
       .from("avatars")
       .getPublicUrl(fileName);
 
-    if (!publicUrlData?.publicUrl) {
-      console.error("Failed to get public URL");
+    if (publicUrlError || !publicUrlData?.publicUrl) {
+      console.error("Error getting public URL:", publicUrlError?.message);
       return;
     }
 
     const publicUrl = publicUrlData.publicUrl;
     setUploadedUrl(publicUrl);
 
-    // Immediately update Supabase user profile with image URL
     const {
       data: { user },
       error: userError,
@@ -112,7 +111,7 @@ const EditProfile: React.FC = () => {
     const { error: updateError } = await supabase
       .from("users")
       .update({ profile_image: publicUrl })
-      .eq("email", user.email);
+      .eq("id", user.email);
 
     if (updateError) {
       console.error("Error saving image URL to Supabase:", updateError);
