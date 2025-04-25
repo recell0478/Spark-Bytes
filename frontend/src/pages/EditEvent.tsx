@@ -1,173 +1,206 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { supabase } from "../utils/supabaseClient";
-import useProtectRoute from "../hooks/useProtectRoute";
 import { Navbar } from "./Navbar";
+import { Form, Input, Checkbox, Button } from "antd";
+
+// Allergy options should match your Events table allergens enum or array values
+const allergyOptions = [
+  "Dairy-free",
+  "Gluten-free",
+  "Kosher",
+  "Halal",
+  "Vegetarian",
+  "Vegan",
+  "Nut-free",
+];
+
+interface EventData {
+  name: string;
+  spots_remaining: number;
+  location: string;
+  time_start: string;
+  time_end: string;
+  allergens: string[];
+  description: string;
+}
 
 const EditEvent: React.FC = () => {
-    const navigate = useNavigate();
-    // const checkingAuth = useProtectRoute();
-    const [eventData, setEventData] = useState({
-        eventName: "",
-        spots: 0,
-        location:"",
-        time:"",
-        allergy: "",
-        foodDescription: "",
-    });
+  const navigate = useNavigate();
+  const { eventId } = useParams<{ eventId: string }>();
+  const [loading, setLoading] = useState(true);
+  const [form] = Form.useForm();
 
-    const eventId = "your-event-id"; // Replace with dynamic ID or props
+  useEffect(() => {
+    if (!eventId) {
+      navigate("/profile");
+      return;
+    }
 
-    useEffect (() => {
-        const fetchEvent = async () => {
-            const { data, error } = await supabase
-                .from("events")
-                .select("*")
-                .eq("id", eventId)
-                .single();
-                
-            if (error) {
-                console.error("Error fetching event:", error);
-            } else if (data) {
-                setEventData({
-                    eventName: data.name,
-                    spots: data.spots,
-                    location: data.location,
-                    time: data.time,
-                    allergy: data.allergy,
-                    foodDescription: data.description,
-                });
-            }
-        };
+    const fetchEvent = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("Events")
+          .select(
+            "name, spots_remaining, location, time_start, time_end, allergens, description"
+          )
+          .eq("id", eventId)
+          .single();
 
-        fetchEvent();
-    }, []);
+        if (error) throw error;
 
-    // if (checkingAuth) 
-    //     return null;
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setEventData({ ...eventData, [e.target.name]: e.target.value});
+        // Populate form with existing values
+        form.setFieldsValue({
+          eventName: data.name,
+          quantity: data.spots_remaining,
+          location: data.location,
+          startTime: data.time_start,
+          endTime: data.time_end,
+          allergy: data.allergens,
+          foodDescription: data.description,
+        });
+      } catch (err) {
+        console.error("Error fetching event:", err);
+        alert("Failed to load event details.");
+        navigate("/profile");
+      } finally {
+        setLoading(false);
+      }
     };
 
-    const handleSave = async () => {
-        const { error } = await supabase
-            .from("events")
-            .update({
-                name: eventData.eventName,
-                spots: eventData.spots,
-                location: eventData.location,
-                time: eventData.time,
-                allergy: eventData.allergy,
-                description: eventData.foodDescription,
-            })
-            .eq("id", eventId);
-        
-        if (error) {
-            alert("Error saving event.");
-        } else {
-            alert("Changes saved!");
-            navigate("/profile");
-        }
-    };
+    fetchEvent();
+  }, [eventId, form, navigate]);
 
-    return (
-        <div
-            style={{ 
-                fontFamily: "Inter, sans-serif",
-                padding: "2rem"
-            }}
+  const onFinish = async (values: any) => {
+    const {
+      eventName,
+      quantity,
+      location,
+      startTime,
+      endTime,
+      allergy,
+      foodDescription,
+    } = values;
+
+    try {
+      const { error } = await supabase
+        .from("Events")
+        .update({
+          name: eventName,
+          spots_remaining: quantity,
+          location,
+          time_start: startTime,
+          time_end: endTime,
+          allergens: allergy,
+          description: foodDescription,
+        })
+        .eq("id", eventId);
+
+      if (error) {
+        console.error("Error updating event:", error);
+        alert("Error saving changes.");
+      } else {
+        alert("Event updated successfully!");
+        navigate("/profile");
+      }
+    } catch (err) {
+      console.error("Unexpected error:", err);
+      alert("An unexpected error occurred.");
+    }
+  };
+
+  if (loading) return <div>Loading event...</div>;
+
+  return (
+    <div style={{ fontFamily: "Inter, sans-serif", padding: "2rem" }}>
+      <Navbar isLoggedIn={true} />
+      <main style={{ maxWidth: 700, margin: "2rem auto" }}>
+        <h1
+          style={{
+            fontSize: "2rem",
+            borderBottom: "1px solid #aaa",
+            marginBottom: "2rem",
+          }}
         >
-            <Navbar isLoggedIn={true} />
+          Edit My Event
+        </h1>
 
-            <main
-                style={{
-                    maxWidth: "700px",
-                    margin: "2rem auto"
-                }}
+        <Form
+          form={form}
+          layout="vertical"
+          onFinish={onFinish}
+        >
+          <Form.Item
+            label="Event Name"
+            name="eventName"
+            rules={[{ required: true, message: "Please input the event name" }]}
+          >
+            <Input size="large" />
+          </Form.Item>
+
+          <Form.Item
+            label="Number of Spots"
+            name="quantity"
+            rules={[{ required: true, message: "Please input the number of spots" }]}
+          >
+            <Input type="number" size="large" />
+          </Form.Item>
+
+          <Form.Item
+            label="Location"
+            name="location"
+            rules={[{ required: true, message: "Please input the location" }]}
+          >
+            <Input size="large" />
+          </Form.Item>
+
+          <Form.Item
+            label="Start Time"
+            name="startTime"
+            rules={[{ required: true, message: "Please input the start time" }]}
+          >
+            <Input type="time" size="large" />
+          </Form.Item>
+
+          <Form.Item
+            label="End Time"
+            name="endTime"
+            rules={[{ required: true, message: "Please input the end time" }]}
+          >
+            <Input type="time" size="large" />
+          </Form.Item>
+
+          <Form.Item label="Allergies" name="allergy">
+            <Checkbox.Group options={allergyOptions} />
+          </Form.Item>
+
+          <Form.Item
+            label="Food Description"
+            name="foodDescription"
+            rules={[{ required: true, message: "Please input the description" }]}
+          >
+            <Input.TextArea rows={4} />
+          </Form.Item>
+
+          <Form.Item>
+            <Button
+              type="primary"
+              htmlType="submit"
+              size="large"
+              style={{
+                backgroundColor: "#4CAF50",
+                borderColor: "#4CAF50",
+                marginRight: "1rem",
+              }}
             >
-                <h1
-                    style={{
-                        fontSize: "2rem",
-                        borderBottom: "1px solid #aaa",
-                        marginBottom: "2rem"
-                    }}
-                >
-                    Edit My Event
-                </h1>
-
-                {[
-                    { label: "Event Name", name: "eventName"},
-                    { label: "Number of Spots" , name: "spots", type: "number" },
-                    { label: "Location", name: "location"},
-                    { label: "Time", name: "time"},
-                    { label: "Allergy", name: "allergy"},
-                    { label: "Food Description", name: "foodDescription" },
-                ].map(({ label, name, type = "text"}) => (
-                    <div key={name} style={{ marginBottom: "1.5rem"}}
-                    >
-                        <label style={{ fontWeight: 600, marginRight: "1rem", paddingLeft: "1rem"}}>{label}:</label>
-                        <input
-                            type={type}
-                            name={name}
-                            value={eventData[name as keyof typeof eventData]}
-                            onChange={handleChange}
-                            style={{
-                                padding: "1rem",
-                                backgroundColor: "#eee",
-                                border: "1px solid #ccc",
-                                width: "100%",
-                                marginTop: "0.5rem",
-                                fontSize: "1rem",
-                                textAlign: "center",
-                                paddingLeft: "1rem",
-                            }} 
-                        />
-                    </div>
-                ))}
-
-                {/* Action buttons */}
-                <div
-                    style={{
-                        display: "flex",
-                        justifyContent: "flex-end",
-                        gap: "1rem",
-                        paddingRight: "2rem",
-                    }}
-                >
-                    <button
-                        onClick={handleSave}
-                        style={{
-                            backgroundColor: "#e71f1f",
-                            color:"#fff",
-                            border: "none",
-                            padding: "1rem 1.5rem",
-                            borderRadius: "20px",
-                            cursor: "pointer",
-                            fontWeight: 500,
-                            textAlign: "center",
-                        }}
-                    >
-                        Save Changes
-                    </button>
-                    <button
-                        onClick={() => navigate("/profile")}
-                        style={{
-                            backgroundColor: "#fff",
-                            color: "#e71f1f",
-                            border: "2px solid #e71f1f",
-                            padding: "1rem 1.5rem",
-                            borderRadius: "20px",
-                            cursor: "pointer",
-                            fontWeight: 500,
-                        }}
-                    >
-                        Back to Profile
-                    </button>
-                </div>
-            </main>
-        </div>
-    );
+              Save Changes
+            </Button>
+            <Button size="large" onClick={() => navigate("/profile")}>Cancel</Button>
+          </Form.Item>
+        </Form>
+      </main>
+    </div>
+  );
 };
 
 export default EditEvent;

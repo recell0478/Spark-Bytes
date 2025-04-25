@@ -1,13 +1,44 @@
+import React, { useState, useEffect, useRef } from "react";
 import styles from "./Navbar.module.css";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import profile from "../assets/profile.png";
 import dog from "../assets/dog.png";
+import menu from "../assets/menu.png";
 
 interface NavBarProps {
   isLoggedIn?: boolean;
 }
 
 export const Navbar: React.FC<NavBarProps> = ({ isLoggedIn = false }) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLUListElement | null>(null);
+  const iconRef = useRef<HTMLImageElement | null>(null);
+  const location = useLocation();
+
+  // Close menu when route changes (e.g., clicking a menu link)
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [location]);
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(event.target as Node) &&
+        iconRef.current &&
+        !iconRef.current.contains(event.target as Node)
+      ) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
     <nav className={styles.navbar}>
       {/* Logo and Title */}
@@ -16,13 +47,24 @@ export const Navbar: React.FC<NavBarProps> = ({ isLoggedIn = false }) => {
         <h1 className={styles.title}>Spark!Bytes</h1>
       </div>
 
-      {/* Navigation Links */}
-      <ul className={styles.menuItems}>
+      {/* Hamburger icon for mobile */}
+      <img
+        src={menu}
+        alt="Menu"
+        ref={iconRef}
+        className={styles.menuIcon}
+        onClick={() => setIsMenuOpen((prev) => !prev)}
+      />
+
+      {/* Navigation Menu */}
+      <ul
+        className={`${styles.menuItems} ${isMenuOpen ? styles.showMenu : ""}`}
+        ref={menuRef}
+      >
         <li>
           <Link to="/home">Home</Link>
         </li>
 
-        {/* Conditional Profile Icon or Auth Link */}
         {isLoggedIn ? (
           <>
             <li>

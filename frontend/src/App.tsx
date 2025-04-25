@@ -47,7 +47,7 @@ function App() {
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/edit-event" element={<EditEvent />} />
+        <Route path="/edit-events/:eventId" element={<EditEvent />} />
         <Route path="/edit-profile" element={<EditProfile />} />
       </Routes>
       <Footer />

@@ -1,6 +1,5 @@
 import { Button, Form, Input } from "antd";
 import React, { useEffect, useState } from "react";
-import EventCard from "../EventCard";
 import { Divider } from "antd";
 import Footer from "./Footer";
 import { Checkbox } from "antd";
@@ -9,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 import useRedirectIfAuthenticated from "../hooks/useRedirectedIfAuthenticated";
 
 function Events() {
-
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(true);
@@ -19,22 +17,22 @@ function Events() {
         data: { session },
       } = await supabase.auth.getSession();
       if (!session) {
-        navigate("/sign-in"); 
+        navigate("/sign-in");
       } else {
-        setLoading(false); 
+        setLoading(false);
       }
     };
     checkUser();
   }, [navigate]);
   const onFinish = async (values: any) => {
     console.log("Form values: ", values);
-    
 
     try {
-
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
       const email = user?.email;
-      
+
       const { data, error } = await supabase.from("Events").insert([
         {
           name: values.eventName,
@@ -44,9 +42,7 @@ function Events() {
           time_start: values.startTime,
           time_end: values.endTime,
           allergens: values.allergy,
-          creator_email: email, // store creator's email
-
-          
+          creator_email: email,
         },
       ]);
 
@@ -88,7 +84,14 @@ function Events() {
         <Form
           layout="vertical"
           onFinish={onFinish}
-          style={{ maxWidth: "600px", margin: "0 auto" }}
+          style={{
+            maxWidth: "600px",
+            margin: "0 auto",
+            boxShadow: "0 4px 10px rgba(0, 0, 0, 0.09)",
+            padding: "24px",
+            borderRadius: "8px",
+            backgroundColor: "#ffffff",
+          }}
         >
           <Form.Item
             label="Event Name"
@@ -163,7 +166,17 @@ function Events() {
               type="primary"
               htmlType="submit"
               size="large"
-              style={{ backgroundColor: "#E71F1F", borderColor: "#E71F1F" }}
+              style={{
+                backgroundColor: "#E71F1F",
+                borderColor: "#E71F1F",
+                transition: "transform 0.2s ease-in-out",
+              }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.transform = "scale(1.05)")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.transform = "scale(1)")
+              }
             >
               Create Event
             </Button>

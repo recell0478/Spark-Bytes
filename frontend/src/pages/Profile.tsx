@@ -5,6 +5,9 @@ import { Button, Divider } from "antd";
 import useProtectRoute from "../hooks/useProtectRoute";
 import { Navbar } from "./Navbar";
 import { useLocation } from "react-router";
+import RegisteredEvents from "./profilecards/RegisteredEvents";
+import dayjs from "dayjs";
+
 
 interface UserProfile {
   id: string;
@@ -45,13 +48,16 @@ const ProfilePage: React.FC = () => {
         setUserProfile(profileData);
 
         // Fetch registered events
-        const { data: registeredData, error: registeredError } = await supabase
+        const { data: regsData, error: regsError } = await supabase
           .from("Events_emails")
-          .select("*")
+          .select(
+            `id, event:Events(id, name, location, time_start, time_end, allergens, description, spots_remaining)`
+          )
           .eq("email", user.email);
-
-        if (registeredError) throw registeredError;
-        setRegisteredEvents(registeredData || []);
+        if (regsError) throw regsError;
+        setRegisteredEvents(
+          regsData.map((r: any) => ({ id: r.id, event: r.event }))
+        );
 
         // Fetch events created by user
         const { data: createdEvents, error: createdError } = await supabase
@@ -72,32 +78,71 @@ const ProfilePage: React.FC = () => {
     fetchProfileAndEvents();
   }, [navigate]);
 
+  const handleUnregister = async (regId: number) => {
+    if (!window.confirm("Are you sure you want to unregister from this event?")) return;
+    const { error } = await supabase
+      .from("Events_emails")
+      .delete()
+      .eq("id", regId);
+    if (error) {
+      console.error("Error unregistering:", error);
+      alert("Failed to unregister.");
+    } else {
+      setRegisteredEvents((regs) => regs.filter((r) => r.id !== regId));
+    }
+  };
+  const formatTime = (t: string | null) =>
+      t ? dayjs(`1970-01-01T${t}`).format("h:mm A") : "—";
+
   const handleEdit = (eventId: number) => {
     navigate(`/edit-events?id=${eventId}`);
   };
 
   const handleDelete = async (eventId: number) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this event?");
-    if (confirmDelete) {
-      const { error } = await supabase
+    if (!confirmDelete) return;
+
+    try {
+      // Fetch the event's name (for foreign key cleanup)
+      const { data: eventsData, error: eventsError } = await supabase
+        .from("Events")
+        .select("name")
+        .eq("id", eventId)
+        .single();
+      if (eventsError || !eventsData) {
+        console.error("Error fetching event name:", eventsError);
+        alert("Could not find the event to delete.");
+        return;
+      }
+      const eventName = eventsData.name;
+
+      // Delete all registrations referencing this event name
+      const { error: regError } = await supabase
+        .from("Events_emails")
+        .delete()
+        .eq("event_name", eventName);
+      if (regError) {
+        console.error("Error deleting related registrations:", regError);
+        // proceed even if registrations cleanup fails
+      }
+
+      // Now delete the event itself
+      const { error: delErr } = await supabase
         .from("Events")
         .delete()
         .eq("id", eventId);
-
-      if (error) {
-        console.error("Error deleting event:", error);
-      } else {
-        alert("Event deleted successfully.");
-        if (userProfile) {
-          // Refresh after deletion
-          const { data: eventsData, error: eventsError } = await supabase
-            .from("Events")
-            .select("*")
-            .eq("created_by", userProfile.id);
-
-          if (!eventsError) setMyEvents(eventsData || []);
-        }
+      if (delErr) {
+        console.error("Error deleting event:", delErr);
+        alert("Failed to delete event.");
+        return;
       }
+
+      alert("Event deleted successfully.");
+      // Update local state to remove the deleted event
+      setMyEvents((events) => events.filter((e) => e.id !== eventId));
+    } catch (error) {
+      console.error("Unexpected error deleting event:", error);
+      alert("An unexpected error occurred.");
     }
   };
 
@@ -255,7 +300,7 @@ const ProfilePage: React.FC = () => {
                   backgroundColor: "#4CAF50",
                   borderColor: "#4CAF50",
                 }}
-                onClick={() => navigate("/edit-event")}
+                onClick={() => navigate(`/edit-events/${event.id}`)}
                 >
                 Edit
               </Button>
@@ -285,21 +330,24 @@ const ProfilePage: React.FC = () => {
         >
           Registered Events
         </h1>
-        <Divider
-          style={{ height: "0.3px", backgroundColor: "#000", marginTop: "0" }}
-        />
+        <Divider />
+
         {registeredEvents.length > 0 ? (
-          registeredEvents.map((event) => (
-            <div
-              key={event.id}
-              style={{
-                marginBottom: "1rem",
-                padding: "1rem",
-                border: "1px solid #ccc",
-                borderRadius: "10px",
-              }}
-            >
-              <p><strong>Event Name:</strong> {event.event_name}</p>
+          registeredEvents.map(({ id, event }) => (
+            <div key={id} 
+            style={{ 
+              border: "1px solid #ccc", 
+              borderRadius: 10, padding: "1rem", 
+              marginBottom: "1rem" }}>
+
+              <h2>{event.name}</h2>
+              <p><strong>Location:</strong> {event.location}</p>
+              <p><strong>Start:</strong> {formatTime(event.time_start)}</p>
+              <p><strong>End:</strong> {formatTime(event.time_end)}</p>
+              <p><strong>Spots Remaining:</strong> {event.spots_remaining}</p>
+              <p><strong>Allergens:</strong> {event.allergens}</p>
+              <p><strong>Description:</strong> {event.description}</p>
+              <Button danger onClick={() => handleUnregister(id)}>Unregister</Button>
             </div>
           ))
         ) : (
