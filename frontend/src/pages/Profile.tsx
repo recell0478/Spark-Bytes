@@ -100,26 +100,48 @@ const ProfilePage: React.FC = () => {
 
   const handleDelete = async (eventId: number) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this event?");
-    if (confirmDelete) {
-      const { error } = await supabase
+    if (!confirmDelete) return;
+
+    try {
+      // Fetch the event's name (for foreign key cleanup)
+      const { data: eventsData, error: eventsError } = await supabase
+        .from("Events")
+        .select("name")
+        .eq("id", eventId)
+        .single();
+      if (eventsError || !eventsData) {
+        console.error("Error fetching event name:", eventsError);
+        alert("Could not find the event to delete.");
+        return;
+      }
+      const eventName = eventsData.name;
+
+      // Delete all registrations referencing this event name
+      const { error: regError } = await supabase
+        .from("Events_emails")
+        .delete()
+        .eq("event_name", eventName);
+      if (regError) {
+        console.error("Error deleting related registrations:", regError);
+      }
+
+      // Now delete the event itself
+      const { error: deleteError } = await supabase
         .from("Events")
         .delete()
         .eq("id", eventId);
-
-      if (error) {
-        console.error("Error deleting event:", error);
-      } else {
-        alert("Event deleted successfully.");
-        if (userProfile) {
-          // Refresh after deletion
-          const { data: eventsData, error: eventsError } = await supabase
-            .from("Events")
-            .select("*")
-            .eq("created_by", userProfile.id);
-
-          if (!eventsError) setMyEvents(eventsData || []);
-        }
+      if (deleteError) {
+        console.error("Error deleting event:", deleteError);
+        alert("Failed to delete event.");
+        return;
       }
+
+      alert("Event deleted successfully.");
+      // Update local state to remove the deleted event
+      setMyEvents((events) => events.filter((e) => e.id !== eventId));
+    } catch (error) {
+      console.error("Unexpected error deleting event:", error);
+      alert("An unexpected error occurred.");
     }
   };
 
