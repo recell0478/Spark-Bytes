@@ -123,15 +123,16 @@ const ProfilePage: React.FC = () => {
         .eq("event_name", eventName);
       if (regError) {
         console.error("Error deleting related registrations:", regError);
+        // proceed even if registrations cleanup fails
       }
 
       // Now delete the event itself
-      const { error: deleteError } = await supabase
+      const { error: delErr } = await supabase
         .from("Events")
         .delete()
         .eq("id", eventId);
-      if (deleteError) {
-        console.error("Error deleting event:", deleteError);
+      if (delErr) {
+        console.error("Error deleting event:", delErr);
         alert("Failed to delete event.");
         return;
       }

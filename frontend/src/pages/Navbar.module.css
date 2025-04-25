@@ -20,20 +20,17 @@
   display: flex;
   align-items: center;
 }
+
 .menuItems {
-  display: flex; 
-  align-items: center;  /* Vertically centers the items */
-  gap: 30px;  /* Adds space between items */
-  list-style: none;  /* Removes the default bullet points */
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  list-style: none;
   padding-right: 20px;
 }
-.menuIcon {
-  display: none;
-  width: 30px;
-  cursor: pointer;
-}
+
 .menuItems li {
-  text-align: left;  /* Aligns the text inside each list item */
+  text-align: left;
 }
 
 .menuItems a {
@@ -64,35 +61,53 @@
   gap: 10px;
   align-items: center;
 }
+
+.menuIcon {
+  display: none;
+  width: 30px;
+  cursor: pointer;
+}
+
 @media (max-width: 768px) {
   .navbar {
-    padding: 0.5em 1em; /* make it thinner */
+    padding: 0.5em 1em;
+    flex-wrap: wrap;
+  }
+  .menu {
+    width: 30px;
+    height: 30px;
   }
   .menuIcon {
     display: block;
   }
 
   .menuItems {
-    display: flex;
-    flex-direction: row; /* horizontal layout */
-    justify-content: center; /* center them if you want */
-    align-items: center;
-    gap: 10px; /* space between items */
-    list-style: none; /* optional cleanup */
-    padding: 0;
-    margin: 0;
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    right: 1em;
+    background-color: #E71F1F;
+    border-radius: 10px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    padding: 1em;
+    gap: 15px;
+    width: fit-content;
+    z-index: 999;
   }
+
   .showMenu {
     display: flex;
   }
-  .menuItems li {
-    margin: 0; /* remove bottom margin since it's horizontal now */
-  }
 
   .menuItems a {
-    font-size: 16px; /* slightly smaller font if needed */
-    text-decoration: none;
-    padding: 0.5em;
+    font-size: 18px;
+    padding: 0.5em 1em;
+    width: 100%;
+    text-align: center;
+  }
+
+  .profileImage {
+    margin: 0 auto;
   }
 }
-
