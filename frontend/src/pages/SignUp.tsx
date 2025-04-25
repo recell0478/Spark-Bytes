@@ -17,13 +17,11 @@ const SignUp: React.FC = () => {
 
     
 
-    const { data, error } = await supabase.from("users").insert([
-      {
-        fullname: fullName,
-        email,
-        password,
-      },
-    ]);
+    const { data, error } = await supabase.auth.signUp({
+      email: email,
+      password: password
+    });
+    
 
     if (!email.endsWith("@bu.edu")) {
       setError("Email must end with @bu.edu");
