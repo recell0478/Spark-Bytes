@@ -15,6 +15,7 @@ interface UserProfile {
   fullname: string;
   created_at: string;
   allergens: string;
+  profile_image: string| null   // new profile image
 }
 
 const ProfilePage: React.FC = () => {
@@ -40,7 +41,7 @@ const ProfilePage: React.FC = () => {
         // Fetch user profile
         const { data: profileData, error: profileError } = await supabase
           .from("users")
-          .select("id, email, fullname, created_at, allergens")
+          .select("id, email, fullname, created_at, allergens, profile_image") // new for profile image
           .eq("email", user.email)
           .single();
 
@@ -207,7 +208,15 @@ const ProfilePage: React.FC = () => {
               alignItems: "center",
             }}
           >
-            👤
+            {userProfile.profile_image ? (
+              <img
+                src={userProfile.profile_image}
+                alt="avatar"
+                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+              />
+            ) : (
+              <span style={{ fontSize: 48 }}>👤</span>
+            )}
           </div>
         </div>
 

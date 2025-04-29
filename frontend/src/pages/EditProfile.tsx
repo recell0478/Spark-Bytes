@@ -71,54 +71,57 @@ const EditProfile: React.FC = () => {
     }
   };
 
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
-    const fileName = `${crypto.randomUUID()}.${file.name.split(".").pop()}`;
-
-    const { data: uploadData, error: uploadError } = await supabase.storage
-      .from("avatars")
-      .upload(fileName, file);
-
-    if (uploadError) {
-      console.error("Upload error:", uploadError);
-      return;
-    }
-
-    const { data: publicUrlData } = supabase.storage
-      .from("avatars")
-      .getPublicUrl(fileName);
-
-    if (publicUrlError || !publicUrlData?.publicUrl) {
-      console.error("Error getting public URL:", publicUrlError?.message);
-      return;
-    }
-
-    const publicUrl = publicUrlData.publicUrl;
-    setUploadedUrl(publicUrl);
-
+  
+    //  Get user
     const {
       data: { user },
-      error: userError,
+      error: authErr,
     } = await supabase.auth.getUser();
-
-    if (userError || !user) {
-      console.error("User not logged in");
+    if (authErr || !user) {
+      alert("Not logged in");
       return;
     }
-
-    const { error: updateError } = await supabase
+  
+    //path in the bucket
+    const ext = file.name.split(".").pop();
+    const filePath = `${user.id}/${Date.now()}.${ext}`;
+  
+    // Upload 
+    const { error: uploadErr } = await supabase.storage
+      .from("profile-picture")
+      .upload(filePath, file, { upsert: true });
+  
+    if (uploadErr) {
+      alert("Upload failed: " + uploadErr.message);
+      return;
+    }
+  
+    // Get a signed url
+    const { data: urlData } = supabase.storage
+      .from("profile-picture")
+      .getPublicUrl(filePath);
+  
+    const publicUrl = urlData.publicUrl;
+    setUploadedUrl(publicUrl);          
+  
+    //  Save url into users table
+    const { error: updateErr } = await supabase
       .from("users")
       .update({ profile_image: publicUrl })
-      .eq("id", user.email);
-
-    if (updateError) {
-      console.error("Error saving image URL to Supabase:", updateError);
+      .eq("email", user.email);            
+  
+    if (updateErr) {
+      alert("Could not save avatar: " + updateErr.message);
     } else {
-      console.log("Image URL successfully saved to Supabase");
+      console.log("Avatar saved!");
     }
   };
+  
 
   if (loading) {
     return <div>Loading profile...</div>;
@@ -162,6 +165,7 @@ const EditProfile: React.FC = () => {
               overflow: "hidden",
             }}
           >
+
             {uploadedUrl ? (
               <img
                 src={uploadedUrl}
