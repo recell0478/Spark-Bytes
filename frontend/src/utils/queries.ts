@@ -1,10 +1,9 @@
-import {supabase} from './supabaseClient'
+import { createClient } from '@supabase/supabase-js';
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
 
-
-
-
-
-async function handleSignIn(email: string, password: string) {
+const supabase = createClient(supabaseUrl, supabaseAnonKey)
+export async function handleSignIn(email: string, password: string) {
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
@@ -22,7 +21,7 @@ async function handleSignIn(email: string, password: string) {
         name: string, 
         spots_remaining: string, 
         description: string, 
-        time: string, 
+        _time: string, 
         allergens: string,
         time_start: any,
         time_end: any
@@ -45,10 +44,13 @@ async function handleSignIn(email: string, password: string) {
       return { success: false, error }
     }
   
+    if (!data) {
+      return { success: false, error: new Error('No data returned') };
+    }
     return { success: true, event: data[0] }
   }
   
-  async function handleSignUp(fullname: string, email: string, password: string) {
+  export async function handleSignUp(fullname: string, email: string, password: string) {
     const { data, error } = await supabase
       .from('users')
       .insert({

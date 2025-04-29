@@ -1,8 +1,8 @@
 // src/context/AuthContext.tsx
 
 import { createContext, useContext, useState, useEffect } from "react";
-import { supabase } from "../";
-import { Session, User } from "@supabase/supabase-js";
+import { User } from "@supabase/supabase-js";
+import { supabase } from "../utils/supabaseClient";
 
 interface AuthContextType {
   user: User | null;
@@ -32,9 +32,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user || null);
-    });
+    } = supabase.auth.onAuthStateChange(
+      (_event: string, session: { user: User | null } | null) => {
+        setUser(session?.user || null);
+      }
+    );
 
     return () => {
       subscription.unsubscribe();

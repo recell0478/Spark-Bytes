@@ -1,4 +1,3 @@
-import React from "react";
 import "@fontsource/abhaya-libre/800.css";
 import dog from "../assets/dog.png";
 import { Button, Divider } from "antd";

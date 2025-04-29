@@ -2,12 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../utils/supabaseClient";
 import { Button, Divider } from "antd";
-import useProtectRoute from "../hooks/useProtectRoute";
 import { Navbar } from "./Navbar";
-import { useLocation } from "react-router";
-import RegisteredEvents from "./profilecards/RegisteredEvents";
 import dayjs from "dayjs";
-
 
 interface UserProfile {
   id: string;
@@ -19,7 +15,6 @@ interface UserProfile {
 }
 
 const ProfilePage: React.FC = () => {
-  const checkingAuth = useProtectRoute("/sign-in");
   const navigate = useNavigate();
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [registeredEvents, setRegisteredEvents] = useState<any[]>([]);
@@ -80,7 +75,8 @@ const ProfilePage: React.FC = () => {
   }, [navigate]);
 
   const handleUnregister = async (regId: number) => {
-    if (!window.confirm("Are you sure you want to unregister from this event?")) return;
+    if (!window.confirm("Are you sure you want to unregister from this event?"))
+      return;
     const { error } = await supabase
       .from("Events_emails")
       .delete()
@@ -93,14 +89,16 @@ const ProfilePage: React.FC = () => {
     }
   };
   const formatTime = (t: string | null) =>
-      t ? dayjs(`1970-01-01T${t}`).format("h:mm A") : "—";
+    t ? dayjs(`1970-01-01T${t}`).format("h:mm A") : "—";
 
-  const handleEdit = (eventId: number) => {
-    navigate(`/edit-events?id=${eventId}`);
-  };
+  // const handleEdit = (eventId: number) => {
+  //   navigate(`/edit-events?id=${eventId}`);
+  // };
 
   const handleDelete = async (eventId: number) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this event?");
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this event?"
+    );
     if (!confirmDelete) return;
 
     try {
@@ -302,7 +300,9 @@ const ProfilePage: React.FC = () => {
               }}
             >
               <h3>{event.name}</h3>
-              <p><strong>Location:</strong> {event.location}</p>
+              <p>
+                <strong>Location:</strong> {event.location}
+              </p>
               <Button
                 style={{
                   marginRight: "1rem",
@@ -310,13 +310,10 @@ const ProfilePage: React.FC = () => {
                   borderColor: "#4CAF50",
                 }}
                 onClick={() => navigate(`/edit-events/${event.id}`)}
-                >
+              >
                 Edit
               </Button>
-              <Button
-                danger
-                onClick={() => handleDelete(event.id)}
-              >
+              <Button danger onClick={() => handleDelete(event.id)}>
                 Delete
               </Button>
             </div>
@@ -343,20 +340,48 @@ const ProfilePage: React.FC = () => {
 
         {registeredEvents.length > 0 ? (
           registeredEvents.map(({ id, event }) => (
-            <div key={id} 
-            style={{ 
-              border: "1px solid #ccc", 
-              borderRadius: 10, padding: "1rem", 
-              marginBottom: "1rem" }}>
-
+            <div
+              key={id}
+              style={{
+                border: "1px solid #ccc",
+                borderRadius: 10,
+                padding: "1rem",
+                marginBottom: "1rem",
+              }}
+            >
               <h2>{event.name}</h2>
-              <p><strong>Location:</strong> {event.location}</p>
-              <p><strong>Start:</strong> {formatTime(event.time_start)}</p>
-              <p><strong>End:</strong> {formatTime(event.time_end)}</p>
-              <p><strong>Spots Remaining:</strong> {event.spots_remaining}</p>
-              <p><strong>Allergens:</strong> {event.allergens}</p>
-              <p><strong>Description:</strong> {event.description}</p>
-              <Button danger onClick={() => handleUnregister(id)}>Unregister</Button>
+              <p>
+                <strong>Location:</strong> {event.location}
+              </p>
+              <p>
+                <strong>Start:</strong> {formatTime(event.time_start)}
+              </p>
+              <p>
+                <strong>End:</strong> {formatTime(event.time_end)}
+              </p>
+              <p>
+                <strong>Spots Remaining:</strong> {event.spots_remaining}
+              </p>
+              <p>
+                <strong>Allergy:</strong>{" "}
+                {(() => {
+                  if (!event.allergens) return "None specified";
+                  try {
+                    const parsed = JSON.parse(event.allergens);
+                    return Array.isArray(parsed) && parsed.length
+                      ? parsed.join(", ")
+                      : "None specified";
+                  } catch {
+                    return event.allergens;
+                  }
+                })()}
+              </p>{" "}
+              <p>
+                <strong>Description:</strong> {event.description}
+              </p>
+              <Button danger onClick={() => handleUnregister(id)}>
+                Unregister
+              </Button>
             </div>
           ))
         ) : (

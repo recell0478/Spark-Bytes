@@ -15,15 +15,15 @@ const allergyOptions = [
   "Nut-free",
 ];
 
-interface EventData {
-  name: string;
-  spots_remaining: number;
-  location: string;
-  time_start: string;
-  time_end: string;
-  allergens: string[];
-  description: string;
-}
+// interface EventData {
+//   name: string;
+//   spots_remaining: number;
+//   location: string;
+//   time_start: string;
+//   time_end: string;
+//   allergens: string[];
+//   description: string;
+// }
 
 const EditEvent: React.FC = () => {
   const navigate = useNavigate();
@@ -125,11 +125,7 @@ const EditEvent: React.FC = () => {
           Edit My Event
         </h1>
 
-        <Form
-          form={form}
-          layout="vertical"
-          onFinish={onFinish}
-        >
+        <Form form={form} layout="vertical" onFinish={onFinish}>
           <Form.Item
             label="Event Name"
             name="eventName"
@@ -141,7 +137,9 @@ const EditEvent: React.FC = () => {
           <Form.Item
             label="Number of Spots"
             name="quantity"
-            rules={[{ required: true, message: "Please input the number of spots" }]}
+            rules={[
+              { required: true, message: "Please input the number of spots" },
+            ]}
           >
             <Input type="number" size="large" />
           </Form.Item>
@@ -177,7 +175,9 @@ const EditEvent: React.FC = () => {
           <Form.Item
             label="Food Description"
             name="foodDescription"
-            rules={[{ required: true, message: "Please input the description" }]}
+            rules={[
+              { required: true, message: "Please input the description" },
+            ]}
           >
             <Input.TextArea rows={4} />
           </Form.Item>
@@ -195,7 +195,9 @@ const EditEvent: React.FC = () => {
             >
               Save Changes
             </Button>
-            <Button size="large" onClick={() => navigate("/profile")}>Cancel</Button>
+            <Button size="large" onClick={() => navigate("/profile")}>
+              Cancel
+            </Button>
           </Form.Item>
         </Form>
       </main>
