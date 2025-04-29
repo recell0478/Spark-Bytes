@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Navbar } from "./Navbar";
-import useProtectRoute from "../hooks/useProtectRoute";
 import { supabase } from "../utils/supabaseClient";
 
 const EditProfile: React.FC = () => {
   const navigate = useNavigate();
-  const checkingAuth = useProtectRoute();
   const [loading, setLoading] = useState(true);
 
   const [name, setName] = useState("");
@@ -77,7 +75,7 @@ const EditProfile: React.FC = () => {
 
     const fileName = `${crypto.randomUUID()}.${file.name.split(".").pop()}`;
 
-    const { data: uploadData, error: uploadError } = await supabase.storage
+    const { error: uploadError } = await supabase.storage
       .from("avatars")
       .upload(fileName, file);
 
@@ -90,10 +88,10 @@ const EditProfile: React.FC = () => {
       .from("avatars")
       .getPublicUrl(fileName);
 
-    if (publicUrlError || !publicUrlData?.publicUrl) {
-      console.error("Error getting public URL:", publicUrlError?.message);
-      return;
-    }
+    // if (publicUrlError || !publicUrlData?.publicUrl) {
+    //   console.error("Error getting public URL:", publicUrlError?.message);
+    //   return;
+    // }
 
     const publicUrl = publicUrlData.publicUrl;
     setUploadedUrl(publicUrl);

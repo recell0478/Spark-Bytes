@@ -4,8 +4,6 @@ import { supabase } from "../utils/supabaseClient";
 import { Button, Divider } from "antd";
 import useProtectRoute from "../hooks/useProtectRoute";
 import { Navbar } from "./Navbar";
-import { useLocation } from "react-router";
-import RegisteredEvents from "./profilecards/RegisteredEvents";
 import dayjs from "dayjs";
 
 interface UserProfile {
@@ -17,7 +15,6 @@ interface UserProfile {
 }
 
 const ProfilePage: React.FC = () => {
-  const checkingAuth = useProtectRoute("/sign-in");
   const navigate = useNavigate();
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [registeredEvents, setRegisteredEvents] = useState<any[]>([]);
@@ -94,9 +91,9 @@ const ProfilePage: React.FC = () => {
   const formatTime = (t: string | null) =>
     t ? dayjs(`1970-01-01T${t}`).format("h:mm A") : "—";
 
-  const handleEdit = (eventId: number) => {
-    navigate(`/edit-events?id=${eventId}`);
-  };
+  // const handleEdit = (eventId: number) => {
+  //   navigate(`/edit-events?id=${eventId}`);
+  // };
 
   const handleDelete = async (eventId: number) => {
     const confirmDelete = window.confirm(

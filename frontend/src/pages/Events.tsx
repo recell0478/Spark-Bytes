@@ -1,16 +1,13 @@
 import { Button, Form, Input } from "antd";
-import React, { useEffect, useState } from "react";
-import { Divider } from "antd";
-import Footer from "./Footer";
+import { useEffect, useState } from "react";
 import { Checkbox } from "antd";
 import { supabase } from "../utils/supabaseClient";
 import { useNavigate } from "react-router-dom";
-import useRedirectIfAuthenticated from "../hooks/useRedirectedIfAuthenticated";
 
 function Events() {
   const navigate = useNavigate();
 
-  const [loading, setLoading] = useState(true);
+  const [_loading, setLoading] = useState(true);
   useEffect(() => {
     const checkUser = async () => {
       const {

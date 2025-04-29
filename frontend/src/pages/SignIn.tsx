@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../utils/supabaseClient";
-import { MailOutlined, LockOutlined } from "@ant-design/icons";
 import SignInImage from "../assets/SignIn.jpg";
 import useRedirectIfAuthenticated from "../hooks/useRedirectedIfAuthenticated";
 
@@ -9,7 +8,7 @@ const SignIn: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [_isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   const navigate = useNavigate();
   useRedirectIfAuthenticated("/profile");
@@ -18,7 +17,7 @@ const SignIn: React.FC = () => {
     e.preventDefault();
     setError(null);
 
-    const { data, error } = await supabase.auth.signInWithPassword({
+    const { data: _user, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
