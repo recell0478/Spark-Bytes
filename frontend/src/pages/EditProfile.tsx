@@ -74,35 +74,8 @@ const EditProfile: React.FC = () => {
   ) => {
     const file = e.target.files?.[0];
     if (!file) return;
-<<<<<<< HEAD
   
     //  Get user
-=======
-
-    const fileName = `${crypto.randomUUID()}.${file.name.split(".").pop()}`;
-
-    const { error: uploadError } = await supabase.storage
-      .from("avatars")
-      .upload(fileName, file);
-
-    if (uploadError) {
-      console.error("Upload error:", uploadError);
-      return;
-    }
-
-    const { data: publicUrlData } = supabase.storage
-      .from("avatars")
-      .getPublicUrl(fileName);
-
-    // if (publicUrlError || !publicUrlData?.publicUrl) {
-    //   console.error("Error getting public URL:", publicUrlError?.message);
-    //   return;
-    // }
-
-    const publicUrl = publicUrlData.publicUrl;
-    setUploadedUrl(publicUrl);
-
->>>>>>> c0a05da1701af6d3115ee82562e53ff7e2a27190
     const {
       data: { user },
       error: authErr,
