@@ -11,7 +11,7 @@ const useRedirectIfAuthenticated = (redirectTo: string = "/profile") => {
 
   useEffect(() => {
     const checkSession = async () => {
-      const { data, error } = await supabase.auth.getSession();
+      const { data, error: _error } = await supabase.auth.getSession();
       if (data?.session?.user) {
         navigate(redirectTo);
       }

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../utils/supabaseClient";
 import { Button, Divider } from "antd";
-import useProtectRoute from "../hooks/useProtectRoute";
 import { Navbar } from "./Navbar";
 import dayjs from "dayjs";
 
