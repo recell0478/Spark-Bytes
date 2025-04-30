@@ -21,20 +21,36 @@ const SignUp: React.FC = () => {
     }
 
     const { data, error } = await supabase.auth.signUp({
-      email: email,
-      password: password
+      email,
+      password,
+      options: {
+        data: { fullName: fullName},
+      }
     });
-    
 
-    
-
-    if (error) {
-      console.error("Insert error:", error);
-      setError("The inputted email is already registered");
-    } else {
-      console.log("User added:", data);
-      navigate("/profile");
+    if (data.user) {
+      const { error: insertErr } = await supabase
+        .from("users")
+        .insert([
+          {
+                     
+            email,
+            fullname: fullName,
+            profile_image: null,
+            allergens: "",
+          },
+        ]);
+  
+      if (insertErr) {
+        console.error(insertErr);
+        setError("Could not create profile: " + insertErr.message);
+        return;
+      }
     }
+  
+    
+  
+    navigate("/profile");
   };
 
   return (
