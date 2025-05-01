@@ -20,7 +20,7 @@ const SignUp: React.FC = () => {
       return;
     }
 
-    const { data, error } = await supabase.auth.signUp({
+    const { data } = await supabase.auth.signUp({
       email,
       password,
       options: {
