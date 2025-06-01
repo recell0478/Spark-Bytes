@@ -11,7 +11,7 @@ interface UserProfile {
   fullname: string;
   created_at: string;
   allergens: string;
-  profile_image: string| null   // new profile image
+  profile_image: string | null;
 }
 
 const ProfilePage: React.FC = () => {
@@ -91,10 +91,6 @@ const ProfilePage: React.FC = () => {
   const formatTime = (t: string | null) =>
     t ? dayjs(`1970-01-01T${t}`).format("h:mm A") : "—";
 
-  // const handleEdit = (eventId: number) => {
-  //   navigate(`/edit-events?id=${eventId}`);
-  // };
-
   const handleDelete = async (eventId: number) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this event?"
@@ -102,7 +98,6 @@ const ProfilePage: React.FC = () => {
     if (!confirmDelete) return;
 
     try {
-      // Fetch the event's name (for foreign key cleanup)
       const { data: eventsData, error: eventsError } = await supabase
         .from("Events")
         .select("name")

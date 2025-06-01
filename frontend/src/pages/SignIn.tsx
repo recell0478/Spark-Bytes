@@ -42,7 +42,7 @@ const SignIn: React.FC = () => {
       style={{
         display: "flex",
         height: "calc(100vh - 150px)",
-        width: "100vw",
+        width: "50vw",
         fontFamily: "Inter, sans-serif",
         overflow: "hidden",
       }}
@@ -159,12 +159,12 @@ const SignIn: React.FC = () => {
           backgroundPosition: "center",
           color: "#fff",
           display: "flex",
-          flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
           textAlign: "center",
           padding: "2rem",
           height: "100%",
+          position: "relative", // needed for overlay
         }}
       >
         {/* Overlay for better readability */}
@@ -177,7 +177,14 @@ const SignIn: React.FC = () => {
           }}
         />
 
-        <div style={{ position: "relative", zIndex: 1, marginRight: "5rem" }}>
+        <div
+          style={{
+            // position: "relative",
+            zIndex: 1,
+            maxWidth: "400px",
+            width: "100%",
+          }}
+        >
           <h2
             style={{
               fontSize: "2.2rem",
